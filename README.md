@@ -1,2 +1,2 @@
 # Playlister
-Create playlists, manually or through set-lists, and get concert recommendations
+Web app for creating playlists manually or based on setlists, and getting concert recommendations based on the playlists
