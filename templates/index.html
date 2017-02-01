@@ -3,7 +3,6 @@
   <head>
     <meta charset="utf-8">
     <title>Flask</title>
-    <link rel="stylesheet" href={{ url_for('static', filename='css/index.css') }}></link>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src={{ url_for('static', filename='js/main.js') }}></script>
@@ -12,24 +11,26 @@
   <body ng-app='playlister'>
     <h1>Playlister</h1>
     <input id="input" placeholder="Artist/Song/Album"></input><button onClick="search()">Search</button>
-    <section ng-controller='Account'>
-      <form ng-submit='signup()'>
-        <h2>Sign Up</h2>
-        <label>Username: </label><input name='email' ng-model='uemail' placeholder="email"></input>
-        <label>Password: </label><input  name='password' ng-model='upassword' placeholder="password"></input>
-        <input type='submit'></input>
-      </form>
-      <h2>Sign In</h2>
-      <form ng-submit='signin()'>
-        <label>Username: </label><input ng-model='iemail' name='email' placeholder="email"></input>
-        <label>Password: </label><input  ng-model='ipassword' name='password' placeholder="password"></input>
-        <input type='submit'></input>
-        <p ng-if='signinerror'>Invalid email/password combination</p>
-      </form>
-      <form ng-submit='signout()'>
+    <nav id='accounting' ng-controller='Account'>
+      <button ng-click='printScope()'>Scope</button>
+      <section id='accounting'ng-if='!signedin'>
+        <form ng-submit='signup()'>
+          <h2>Sign Up</h2>
+          <label>Username: </label><input name='email' ng-model='$parent.uemail' placeholder="email"></input>
+          <label>Password: </label><input  name='password' ng-model='$parent.upassword' placeholder="password"></input>
+          <input type='submit'></input>
+        </form>
+        <h2>Sign In</h2>
+        <form ng-submit='signin()'>
+          <label>Username: </label><input ng-model='$parent.iemail' name='email' placeholder="email"></input>
+          <label>Password: </label><input  ng-model='$parent.ipassword' name='password' placeholder="password"></input>
+          <input type='submit'></input>
+        </form>
+      </section>
+      <form ng-submit='signout()' ng-if='signedin'>
         <input type='submit' value='Sign Out'></input>
       </form>
-    </section>
+    </nav>
     <section id="result"><ul id="list"></ul></section>
   </body>
 </html>

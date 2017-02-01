@@ -8,12 +8,16 @@ angular.module('playlister', [])
       $scope.$apply(function(){
         $scope.signinerror = false
       })
+      $scope.signout()
     }
     $scope.signinerror = false
     $scope.signedin = false
+    $scope.printScope = () => {
+      console.log($scope)
+    }
     $scope.signup = () => {
       axios({method: 'POST', url: '/users',
-        data: {email: $scope.uemail, password: $scope.upassword}
+        data: {'email': $scope.uemail, 'password': $scope.upassword}
       }).then(result=>{
         if (result.status === 200){
           $scope.$apply(function(){
@@ -29,8 +33,9 @@ angular.module('playlister', [])
       })
     }
     $scope.signin = () => {
+      window.MY_SCOPE = $scope
       axios({method: 'POST', url: '/sessions',
-        data: {email: $scope.iemail, password: $scope.ipassword}
+        data: {'email': $scope.iemail, 'password': $scope.ipassword}
       }).then(result=>{
         if (result.status === 200){
           $scope.$apply(function(){
@@ -47,7 +52,6 @@ angular.module('playlister', [])
     }
     $scope.signout = () => {
       axios.post('/signout').then(result=>{
-        console.log("Logged out")
       })
     }
   }])
