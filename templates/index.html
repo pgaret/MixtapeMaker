@@ -7,30 +7,57 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src={{ url_for('static', filename='js/main.js') }}></script>
     <script type="text/javascript" src={{ url_for('static', filename='js/app.js') }}></script>
+    <script type="text/javascript" src={{ url_for('static', filename='js/sessions.js') }}></script>
+    <script type="text/javascript" src={{ url_for('static', filename='js/playlists.js') }}></script>
   </head>
   <body ng-app='playlister'>
     <h1>Playlister</h1>
-    <input id="input" placeholder="Artist/Song/Album"></input><button onClick="search()">Search</button>
+    <nav id='playlists' ng-controller='Playlist'>
+      <nav ng-if='signedin'>
+        <h2>{a email a}</h2>
+        <ul ng-repeat='playlist in playlists'>
+          <li>
+            Playlist Name: {a playlist.name a}<br>
+            PL Length: {a playlist.videos.length a}
+            <section ng-if='playlist.videos.length > 0'>
+              <p ng-repeat='vid in playlist.videos'>
+                <button ng-click='printScope()'>Scope</button><br>
+                V Name: {a vid.name a}<br>
+                <iframe width="200" height="150" ng-src='{a getIframeSrc(vid.ytId) a}' frameborder="0" allowfullscreen></iframe>
+              </p>
+            </section>
+          </li>
+        </ul>
+        <button ng-if='!modifying' ng-click='modifyingList()'>+</button>
+        <form ng-submit='createPlaylist()' ng-if='modifying'>
+          <input type='text' ng-model='$parent.$parent.playlistName' placeholder='Name'></input>
+          <input type='submit'></input>
+          <p ng-if='playlisterror'>A playlist with this name already exists</p>
+        </form>
+        <input ng-model='$parent.searchTerm' placeholder="Artist/Song/Album"></input><button ng-click="searchVideos()">Search</button>
+        <p ng-if='gotVideos' ng-repeat='vid in result'>{a vid.snippet.title a}<button ng-click='addVideo(vid.id.videoId, vid.snippet.title)'>Add</button></p>
+      </nav>
+    </nav>
     <nav id='accounting' ng-controller='Account'>
-      <button ng-click='printScope()'>Scope</button>
-      <section id='accounting'ng-if='!signedin'>
+      <section id='accounting' ng-if='!signedin'>
         <form ng-submit='signup()'>
           <h2>Sign Up</h2>
           <label>Username: </label><input name='email' ng-model='$parent.uemail' placeholder="email"></input>
           <label>Password: </label><input  name='password' ng-model='$parent.upassword' placeholder="password"></input>
           <input type='submit'></input>
+          <p ng-if='signuperror'>This email already exists</p>
         </form>
         <h2>Sign In</h2>
         <form ng-submit='signin()'>
           <label>Username: </label><input ng-model='$parent.iemail' name='email' placeholder="email"></input>
           <label>Password: </label><input  ng-model='$parent.ipassword' name='password' placeholder="password"></input>
           <input type='submit'></input>
+          <p ng-if='signinerror'>This email/password combination is invalid</p>
         </form>
       </section>
-      <form ng-submit='signout()' ng-if='signedin'>
+      <form id='signout' ng-submit='signout()' ng-if='signedin'>
         <input type='submit' value='Sign Out'></input>
       </form>
     </nav>
-    <section id="result"><ul id="list"></ul></section>
   </body>
 </html>

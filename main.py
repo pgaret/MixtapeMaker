@@ -3,7 +3,10 @@ import flask_login
 import pdb
 import json
 # from './user.py' import User
+import pymongo
 from pymongo import MongoClient
+from bson.json_util import dumps
+from bson.objectid import ObjectId
 import jwt
 
 app = Flask(__name__)
@@ -45,11 +48,31 @@ def login_user(email):
 
 @app.route("/")
 def index():
+    print("Index page")
     return render_template('index.html')
 
-@app.route("/songs", methods=['POST'])
-def add_song():
-    return render_template('index.html')
+@app.route("/playlists", methods=['POST'])
+def add_playlist():
+    playlistName = json.loads(request.data.decode(encoding='UTF-8'))['playlistName']
+    if db.playlists.find({'name': playlistName}).count() == 0:
+        db.playlists.insert({'name': playlistName, 'users': [flask_login.current_user.id], 'videos': []})
+        return dumps(db.playlists.find({}, {'_id':1}).limit(1).sort('_id', pymongo.DESCENDING))
+    else:
+        return redirect(url_for('index'), 205)
+
+@app.route("/playlists/<playlist_id>", methods=['POST'])
+def edit_playlist(playlist_id):
+    videoId = json.loads(request.data.decode(encoding='UTF-8'))['videoId']
+    videoName = json.loads(request.data.decode(encoding='UTF-8'))['videoName']
+    # pdb.set_trace()
+    if db.playlists.find({'_id': ObjectId(playlist_id)}).count() > 0:
+        db.playlists.update(
+            { '_id': ObjectId(playlist_id)},
+            { '$push': { 'videos': {'name': videoName, 'ytId': videoId} } }
+        )
+        return dumps(db.playlists.find({'_id': ObjectId(playlist_id)}, {'videos': 1}))
+    else:
+        return redirect(url_for('index'), 205)
 
 @app.route("/users", methods=['POST'])
 def add_user():
@@ -68,7 +91,8 @@ def create_session():
     password = json.loads(request.data.decode(encoding='UTF-8'))['password']
     valid = login_user(email)
     if valid == 'Good':
-        return redirect(url_for('index'), 200)
+        playlists = db.playlists.find({'users': { '$all': [email]}}, {'name': 1, 'videos': 1, '_id': 1})
+        return dumps(playlists)
     else:
         return redirect(url_for('index'), 205)
 
