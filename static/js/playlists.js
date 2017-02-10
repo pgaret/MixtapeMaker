@@ -1,5 +1,5 @@
 angular.module('playlister')
-  .controller('Playlist', ['$scope', function($scope){
+  .controller('Playlist', ['$scope', '$timeout', function($scope, $timeout){
     $scope.signedin = false
     $scope.modifying = false
     $scope.currentPlaylist = false
@@ -29,6 +29,13 @@ angular.module('playlister')
               })
           })
     }
+    $scope.$on('youtube.player.ended', function($event, player){
+      let nextVideo = player.g >= $scope.playlists[$scope.currentPlaylist].videos.length ? 'play1' : 'play'+(player.g+1)
+      $timeout(function(){
+        // debugger
+        document.getElementById(nextVideo).click()
+      })
+    })
     $scope.getIframeSrc = function(src){
       return 'https://www.youtube.com/embed/'+src
     }

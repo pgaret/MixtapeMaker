@@ -6,9 +6,9 @@
     <link rel="shortcut_icon" href={{ url_for('static', filename='img/favicon.ico') }}>
     <link rel="stylesheet" href={{ url_for('static', filename='css/index.css') }}>
     <script src="//www.youtube.com/iframe_api"></script>
-    <script src="angular-youtube-embed.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src={{ url_for('static', filename='js/angular-youtube-embed.js') }}></script>
     <script type="text/javascript" src={{ url_for('static', filename='js/main.js') }}></script>
     <script type="text/javascript" src={{ url_for('static', filename='js/app.js') }}></script>
     <script type="text/javascript" src={{ url_for('static', filename='js/sessions.js') }}></script>
@@ -27,9 +27,11 @@
             PL Length: {a playlist.videos.length a}
             <section ng-if='playlist.videos.length > 0'>
               <span class='playlist' ng-repeat='vid in playlist.videos'>
-                  <iframe width="200" height="150" ng-attr-id='{a $index a}' ng-src='{a getIframeSrc(vid.ytId) a}' frameborder="0" allowfullscreen></iframe>
-                  <br>{a vid.name a}
-                  <button ng-click='removeVideo(vid.name)'>Remove</button>
+                <youtube-video video-id='vid.ytId' player-width="'200px'" player-height="'150px'" player='video'></youtube-video>
+                <br>{a vid.name a}
+                <button ng-click='removeVideo(vid.name)'>Remove</button>
+                <button ng-attr-id="{a 'play'+($index+1) a}" ng-click='video.playVideo()'>Play</button>
+                <!-- <button ng-click='test.stopVideo()'>Stop</button> -->
               </span>
             </section>
           </li>
