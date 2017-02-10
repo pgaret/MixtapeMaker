@@ -43,6 +43,24 @@ angular.module('playlister')
       }
       else { $scope.$apply( () =>  { $scope.addVideoError = true }) }
     })}
+    $scope.removeVideo = (videoId) => {
+      axios({method: 'DELETE', url: '/playlists/'+$scope.playlists[$scope.currentPlaylist].dbId+"/"+videoId}
+      ).then(result=>{
+        if (result.status === 200){
+          for (let i = 0; i < $scope.playlists[$scope.currentPlaylist].videos.length; i++){
+            if ($scope.playlists[$scope.currentPlaylist].videos[i].name === videoId){
+              $scope.$apply(()=>{
+                $scope.playlists[$scope.currentPlaylist].videos.splice(i, 1)
+                return null
+              })
+            }
+          }
+        }
+        else {
+          console.log("failure to delete")
+        }
+    })
+    }
     $scope.modifyingList = () => { $scope.modifying = true }
     $scope.$on('signedin', function(event, next, current){
       $scope.email = next.email

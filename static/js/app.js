@@ -1,4 +1,4 @@
-angular.module('playlister', [])
+angular.module('playlister', ['youtube-embed'])
   .config(['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('{a')
     $interpolateProvider.endSymbol('a}')

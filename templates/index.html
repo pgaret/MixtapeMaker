@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8">
     <title>Flask</title>
+    <link rel="shortcut_icon" href={{ url_for('static', filename='img/favicon.ico') }}>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/index.css') }}>
+    <script src="//www.youtube.com/iframe_api"></script>
+    <script src="angular-youtube-embed.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src={{ url_for('static', filename='js/main.js') }}></script>
@@ -13,29 +17,35 @@
   <body ng-app='playlister'>
     <h1>Playlister</h1>
     <nav id='playlists' ng-controller='Playlist'>
+      <button ng-click='printScope()'>Scope</button><br>
       <nav ng-if='signedin'>
-        <h2>{a email a}</h2>
+        <h2>Welcome, {a email a}!</h2>
+        <button ng-if='!modifying' ng-click='modifyingList()'>Add a Playlist</button>
         <ul ng-repeat='playlist in playlists'>
           <li>
             Playlist Name: {a playlist.name a}<br>
             PL Length: {a playlist.videos.length a}
             <section ng-if='playlist.videos.length > 0'>
-              <p ng-repeat='vid in playlist.videos'>
-                <button ng-click='printScope()'>Scope</button><br>
-                V Name: {a vid.name a}<br>
-                <iframe width="200" height="150" ng-src='{a getIframeSrc(vid.ytId) a}' frameborder="0" allowfullscreen></iframe>
-              </p>
+              <span class='playlist' ng-repeat='vid in playlist.videos'>
+                  <iframe width="200" height="150" ng-attr-id='{a $index a}' ng-src='{a getIframeSrc(vid.ytId) a}' frameborder="0" allowfullscreen></iframe>
+                  <br>{a vid.name a}
+                  <button ng-click='removeVideo(vid.name)'>Remove</button>
+              </span>
             </section>
           </li>
         </ul>
-        <button ng-if='!modifying' ng-click='modifyingList()'>+</button>
         <form ng-submit='createPlaylist()' ng-if='modifying'>
           <input type='text' ng-model='$parent.$parent.playlistName' placeholder='Name'></input>
           <input type='submit'></input>
           <p ng-if='playlisterror'>A playlist with this name already exists</p>
         </form>
-        <input ng-model='$parent.searchTerm' placeholder="Artist/Song/Album"></input><button ng-click="searchVideos()">Search</button>
-        <p ng-if='gotVideos' ng-repeat='vid in result'>{a vid.snippet.title a}<button ng-click='addVideo(vid.id.videoId, vid.snippet.title)'>Add</button></p>
+        <input ng-model='$parent.searchTerm' placeholder="Artist/Song/Album"></input>
+        <button ng-click="searchVideos()">Search</button>
+        <br>
+        <p ng-if='gotVideos' class="playlist" ng-repeat='vid in result'>
+          {a vid.snippet.title a}
+          <iframe width="200" height="150" ng-src='{a getIframeSrc(vid.id.videoId) a}' frameborder="0" allowfullscreen></iframe>
+          <button ng-click='addVideo(vid.id.videoId, vid.snippet.title)'>Add</button></p>
       </nav>
     </nav>
     <nav id='accounting' ng-controller='Account'>

@@ -74,6 +74,17 @@ def edit_playlist(playlist_id):
     else:
         return redirect(url_for('index'), 205)
 
+@app.route("/playlists/<playlist_id>/<video_name>", methods=['DELETE'])
+def remove_video(playlist_id, video_name):
+    if db.playlists.find({'_id': ObjectId(playlist_id)}).count() > 0:
+        db.playlists.update(
+            { '_id': ObjectId(playlist_id)},
+            { '$pull': { 'videos': {'name': video_name}}}
+        )
+        return redirect(url_for('index'), 200)
+    else:
+        return redirect(url_for('index'), 205)
+
 @app.route("/users", methods=['POST'])
 def add_user():
     email = json.loads(request.data.decode(encoding='UTF-8'))['email']
