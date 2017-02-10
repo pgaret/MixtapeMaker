@@ -19,6 +19,13 @@ angular.module('playlister')
           }) } else {
             $scope.$apply(function(){ $scope.playlisterror = true; }) } })
     }
+    $scope.changePlaylist = (listName) => {
+      for (let i = 0; i < $scope.playlists.length; i++){
+        if ($scope.playlists[i].name === listName){
+          $scope.currentPlaylist = i
+        }
+      }
+    }
     $scope.searchVideos = () => {
       let API_KEY= 'AIzaSyDCpSBcCWvzr4mqRS5b6LwYFwD6C9Nx_z4'
       axios.get(`https://www.googleapis.com/youtube/v3/search?q=${$scope.searchTerm}&part=snippet&key=${API_KEY}&type=video`)

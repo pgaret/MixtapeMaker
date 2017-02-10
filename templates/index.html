@@ -22,19 +22,21 @@
         <h2>Welcome, {a email a}!</h2>
         <button ng-if='!modifying' ng-click='modifyingList()'>Add a Playlist</button>
         <ul ng-repeat='playlist in playlists'>
-          <li>
-            Playlist Name: {a playlist.name a}<br>
-            PL Length: {a playlist.videos.length a}
-            <section ng-if='playlist.videos.length > 0'>
-              <span class='playlist' ng-repeat='vid in playlist.videos'>
-                <youtube-video video-id='vid.ytId' player-width="'200px'" player-height="'150px'" player='video'></youtube-video>
-                <br>{a vid.name a}
-                <button ng-click='removeVideo(vid.name)'>Remove</button>
-                <button ng-attr-id="{a 'play'+($index+1) a}" ng-click='video.playVideo()'>Play</button>
-                <!-- <button ng-click='test.stopVideo()'>Stop</button> -->
-              </span>
-            </section>
-          </li>
+          <input type="radio" name="playlists" ng-click='changePlaylist(playlist.name)'>
+            <li>
+              Playlist Name: {a playlist.name a}<br>
+              PL Length: {a playlist.videos.length a}
+              <section ng-if='playlist.videos.length > 0'>
+                <span class='playlist' ng-repeat='vid in playlist.videos'>
+                  <youtube-video video-id='vid.ytId' player-width="'200px'" player-height="'150px'" player='video'></youtube-video>
+                  <br>{a vid.name a}
+                  <button ng-click='removeVideo(vid.name)'>Remove</button>
+                  <button ng-attr-id="{a 'play'+($index+1) a}" ng-click='video.playVideo()'>Play</button>
+                  <!-- <button ng-click='test.stopVideo()'>Stop</button> -->
+                </span>
+              </section>
+            </li>
+          </input>
         </ul>
         <form ng-submit='createPlaylist()' ng-if='modifying'>
           <input type='text' ng-model='$parent.$parent.playlistName' placeholder='Name'></input>
