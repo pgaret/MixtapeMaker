@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Flask</title>
     <link rel="shortcut_icon" href={{ url_for('static', filename='img/favicon.ico') }}>
+    <link rel="stylesheet" href={{ url_for('static', filename='css/skeleton.css') }}>
     <link rel="stylesheet" href={{ url_for('static', filename='css/index.css') }}>
     <script src="//www.youtube.com/iframe_api"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
@@ -20,36 +21,41 @@
       <button ng-click='printScope()'>Scope</button><br>
       <nav ng-if='signedin'>
         <h2>Welcome, {a email a}!</h2>
+        <section class='search three columns offset-by-one column'>
+          <input ng-model='$parent.searchTerm' placeholder="Artist/Song/Album"></input>
+          <button ng-click="searchVideos()">Search</button>
+          <br>
+          <div class="search list">
+            <p ng-if='gotVideos' class="navbar" ng-repeat='vid in result'>
+              {a parseName(vid.snippet.title) a}
+              <br>
+              <youtube-video video-id='vid.id.videoId' player-width="'200px'" player-height="'150px'" ></youtube-video>
+              <br>
+              <button ng-click='addVideo(vid.id.videoId, vid.snippet.title)'>Add</button>
+            </p>
+          </div>
+        </section>
         <button ng-if='!modifying' ng-click='modifyingList()'>Add a Playlist</button>
-        <ul ng-repeat='playlist in playlists'>
-          <input type="radio" name="playlists" ng-click='changePlaylist(playlist.name)'>
-            <li>
-              Playlist Name: {a playlist.name a}<br>
-              PL Length: {a playlist.videos.length a}
-              <section ng-if='playlist.videos.length > 0'>
-                <span class='playlist' ng-repeat='vid in playlist.videos'>
-                  <youtube-video video-id='vid.ytId' player-width="'200px'" player-height="'150px'" player='video'></youtube-video>
-                  <br>{a vid.name a}
-                  <button ng-click='removeVideo(vid.name)'>Remove</button>
-                  <button ng-attr-id="{a 'play'+($index+1) a}" ng-click='video.playVideo()'>Play</button>
-                  <!-- <button ng-click='test.stopVideo()'>Stop</button> -->
-                </span>
-              </section>
-            </li>
-          </input>
-        </ul>
         <form ng-submit='createPlaylist()' ng-if='modifying'>
           <input type='text' ng-model='$parent.$parent.playlistName' placeholder='Name'></input>
           <input type='submit'></input>
           <p ng-if='playlisterror'>A playlist with this name already exists</p>
         </form>
-        <input ng-model='$parent.searchTerm' placeholder="Artist/Song/Album"></input>
-        <button ng-click="searchVideos()">Search</button>
-        <br>
-        <p ng-if='gotVideos' class="playlist" ng-repeat='vid in result'>
-          {a vid.snippet.title a}
-          <iframe width="200" height="150" ng-src='{a getIframeSrc(vid.id.videoId) a}' frameborder="0" allowfullscreen></iframe>
-          <button ng-click='addVideo(vid.id.videoId, vid.snippet.title)'>Add</button></p>
+        <ul class='navbar' ng-repeat='playlist in playlists'>
+          <li><button ng-click='changePlaylist($index)'>{a playlist.name a}</button></li>
+        </ul>
+        <h3>{a currentPlaylist.name a}</h3>
+        <section ng-if='currentPlaylist.videos.length > 0' class='eight columns'>
+            <span class='currentPlaylist' ng-repeat='vid in currentPlaylist.videos'>
+              <div class='navbar playlist'>
+              <youtube-video video-id='vid.ytId' player-width="'150px'" player-height="'100px'" player='video'></youtube-video>
+              <br>{a parseName(vid.name) a}<br>
+              <button class='btn' ng-attr-id="{a 'play'+($index+1) a}" ng-click='video.playVideo()'><img class='play' src={{ url_for('static', filename='img/play.png') }}></img></button>
+              <button class='btn' ng-click='removeVideo(vid.name)'><img class='play' src={{ url_for('static', filename='img/delete.png') }}></img></button>
+              <!-- <button ng-click='test.stopVideo()'>Stop</button> -->
+            </div>
+            </span>
+        </section>
       </nav>
     </nav>
     <nav id='accounting' ng-controller='Account'>
@@ -69,9 +75,9 @@
           <p ng-if='signinerror'>This email/password combination is invalid</p>
         </form>
       </section>
-      <form id='signout' ng-submit='signout()' ng-if='signedin'>
+      <!-- <form id='signout' ng-submit='signout()' ng-if='signedin'>
         <input type='submit' value='Sign Out'></input>
-      </form>
+      </form> -->
     </nav>
   </body>
 </html>

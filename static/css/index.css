@@ -1,4 +1,29 @@
-.playlist{
+.navbar{
   display: inline-block;
-  width: 19%;
+  list-style-type: none;
+}
+
+.playlist{
+  /*width: 19%;*/
+}
+
+.play{
+  width: 25px;
+  height: 25px;
+}
+
+.btn{
+  border-style: none;
+  width: 25px;
+  height: 25px;
+  margin: 0% -2%;
+}
+
+.search{
+  float:right;
+}
+
+.search.list{
+  overflow: scroll;
+  height: 75vh;  
 }
