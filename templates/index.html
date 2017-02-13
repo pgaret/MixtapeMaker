@@ -72,7 +72,7 @@
         <button ng-click="switchState('signup')">Sign Up</button>
         <form ng-if="currentState === 'signup'" ng-submit='signup()'>
           <h2>Sign Up</h2>
-          <label>Username: </label><input name='email' ng-model='$parent.$parent.uemail' placeholder="email"></input>
+          <label>Username: </label><input name='email' type='email' ng-model='$parent.$parent.uemail' placeholder="email"></input>
           <label>Password: </label><input  name='password' type='password' ng-model='$parent.$parent.upassword' placeholder="password"></input>
           <br>
           <input type='submit'></input>
@@ -80,7 +80,7 @@
         </form>
         <form ng-if="currentState === 'signin'" ng-submit='signin()'>
           <h2>Sign In</h2>
-          <label>Username: </label><input ng-model='$parent.$parent.iemail' name='email' placeholder="email"></input>
+          <label>Username: </label><input ng-model='$parent.$parent.iemail' type='email' name='email' placeholder="email"></input>
           <label>Password: </label><input  ng-model='$parent.$parent.ipassword' type='password' name='password' placeholder="password"></input>
           <br>
           <input type='submit'></input>
