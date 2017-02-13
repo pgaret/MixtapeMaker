@@ -8,18 +8,25 @@ from pymongo import MongoClient
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 import jwt
+# import boto3
+#
+# s3 = boto3.resource('s3')
 
 app = Flask(__name__)
 app.secret_key = 'Qx%3Zv@y#m%8Ez@+wUFgH5_enQAgtX'
 
-uri = 'mongodb://pgaret:Playlister2017@ds151289.mlab.com:51289/heroku_hpzk22fl'
-# uri = 'mongodb://localhost:27017/playlister'
+is_prod = os.environ.get('IS_HEROKU', None)
+
+if is_prod:
+    uri = 'mongodb://pgaret:Playlister2017@ds151289.mlab.com:51289/heroku_hpzk22fl'
+else:
+    uri = 'mongodb://localhost:27017/playlister'
 
 client = MongoClient(uri)
-login_manager = flask_login.LoginManager()
-
-login_manager.init_app(app)
 db = client.get_default_database()
+
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
 
 class User(flask_login.UserMixin):
     pass

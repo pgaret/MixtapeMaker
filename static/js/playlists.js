@@ -4,9 +4,6 @@ angular.module('playlister')
     $scope.modifying = false
     $scope.currentPlaylist = false
     $scope.gotVideos = false
-    $scope.playlists = []
-    $scope.videos = []
-    $scope.result = []
     $scope.createPlaylist = () => {
       axios({method: 'POST', url: '/playlists',
             data: {'playlistName': $scope.playlistName}
@@ -81,10 +78,12 @@ angular.module('playlister')
     $scope.signout = () => {
       $rootScope.$broadcast('signout')
       $scope.signedin = false
+      $scope.playlists = []
     }
     $scope.modifyingList = () => { $scope.modifying = true }
     $scope.$on('signedin', function(event, next, current){
       $scope.email = next.email
+      $scope.playlists = []
       for (let i = 0; i < next.data.length; i++) {$scope.playlists.push({name: next.data[i].name, dbId: next.data[i]._id.$oid, videos: next.data[i].videos})}
       $scope.signedin = true
       $scope.currentPlaylist = $scope.playlists[0]
