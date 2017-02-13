@@ -5,7 +5,6 @@ import pdb
 import json
 # from './user.py' import User
 import pymongo
-from urlparse import urlsplit
 from pymongo import MongoClient, Connection
 from bson.json_util import dumps
 from bson.objectid import ObjectId
