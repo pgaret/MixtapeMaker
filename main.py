@@ -17,7 +17,7 @@ app.secret_key = 'Qx%3Zv@y#m%8Ez@+wUFgH5_enQAgtX'
 # parsed = urlsplit(url)
 # db_name = parsed.path[1]
 
-uri = 'mongodb://pgaret:Playlister2017@ds161255.mlab.com:61255/heroku_x76z7c79'
+uri = 'mongodb://pgaret:Playlister2017@ds151289.mlab.com:51289/heroku_hpzk22fl'
 
 client = MongoClient(uri)
 login_manager = flask_login.LoginManager()
