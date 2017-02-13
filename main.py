@@ -12,8 +12,8 @@ import jwt
 app = Flask(__name__)
 app.secret_key = 'Qx%3Zv@y#m%8Ez@+wUFgH5_enQAgtX'
 
-uri = 'mongodb://pgaret:Playlister2017@ds151289.mlab.com:51289/heroku_hpzk22fl'
-# uri = 'mongodb://localhost:27017/playlister'
+# uri = 'mongodb://pgaret:Playlister2017@ds151289.mlab.com:51289/heroku_hpzk22fl'
+uri = 'mongodb://localhost:27017/playlister'
 
 client = MongoClient(uri)
 login_manager = flask_login.LoginManager()
@@ -27,7 +27,7 @@ class User(flask_login.UserMixin):
 @login_manager.user_loader
 def user_loader(email):
     if db.users.find({'email': email}).count() == 0:
-        return
+        return None
     user = User()
     user.id = email
     return user
@@ -36,7 +36,7 @@ def user_loader(email):
 def request_loader(request):
     email = request.form.get('email')
     if db.users.find({'email': email}).count() == 0:
-        return
+        return None
     user = User()
     user.id = email
     user.authenticated = True if db.users.find({'email': email, 'password': password}).count() == 1 else False
@@ -46,9 +46,9 @@ def login_user(email):
     the_user = user_loader(email)
     if the_user:
         flask_login.login_user(the_user)
-        return 'Good'
-    else:
-        return 'Bad'
+        if flask_login.current_user.is_active:
+            return 'Good'
+    return 'Bad'
 
 @app.route("/")
 def index():
@@ -68,7 +68,6 @@ def add_playlist():
 def edit_playlist(playlist_id):
     videoId = json.loads(request.data.decode(encoding='UTF-8'))['videoId']
     videoName = json.loads(request.data.decode(encoding='UTF-8'))['videoName']
-    # pdb.set_trace()
     if db.playlists.find({'_id': ObjectId(playlist_id)}).count() > 0:
         db.playlists.update(
             { '_id': ObjectId(playlist_id)},
@@ -104,10 +103,9 @@ def add_user():
 def create_session():
     email = json.loads(request.data.decode(encoding='UTF-8'))['email']
     password = json.loads(request.data.decode(encoding='UTF-8'))['password']
-    valid = login_user(email)
-    if valid == 'Good':
-        playlists = db.playlists.find({'users': { '$all': [email]}}, {'name': 1, 'videos': 1, '_id': 1})
-        return dumps(playlists)
+    if db.users.find({'email': email, 'password': password}).count() == 1:
+        login_user(email)
+        return dumps(db.playlists.find({'users': { '$all': [email]}}, {'name': 1, 'videos': 1, '_id': 1}))
     else:
         return redirect(url_for('index'), 205)
 
