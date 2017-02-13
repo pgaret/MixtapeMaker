@@ -12,8 +12,8 @@ import jwt
 app = Flask(__name__)
 app.secret_key = 'Qx%3Zv@y#m%8Ez@+wUFgH5_enQAgtX'
 
-# uri = 'mongodb://pgaret:Playlister2017@ds151289.mlab.com:51289/heroku_hpzk22fl'
-uri = 'mongodb://localhost:27017/playlister'
+uri = 'mongodb://pgaret:Playlister2017@ds151289.mlab.com:51289/heroku_hpzk22fl'
+# uri = 'mongodb://localhost:27017/playlister'
 
 client = MongoClient(uri)
 login_manager = flask_login.LoginManager()
@@ -30,16 +30,6 @@ def user_loader(email):
         return None
     user = User()
     user.id = email
-    return user
-
-@login_manager.request_loader
-def request_loader(request):
-    email = request.form.get('email')
-    if db.users.find({'email': email}).count() == 0:
-        return None
-    user = User()
-    user.id = email
-    user.authenticated = True if db.users.find({'email': email, 'password': password}).count() == 1 else False
     return user
 
 def login_user(email):
