@@ -90,6 +90,7 @@ def add_user():
     email = json.loads(request.data.decode(encoding='UTF-8'))['email']
     if db.users.find({'email': email}).count() == 0:
         password = json.loads(request.data.decode(encoding='UTF-8'))['password']
+        password = jwt.encode({'password': password}, os.environ.get('SECRET', 'DEV'), algorithm='HS256')
         db.users.insert({'email': email, 'password': password})
         login_user(email)
         return redirect(url_for('index'), 200)
@@ -99,7 +100,7 @@ def add_user():
 @app.route("/sessions", methods=['POST'])
 def create_session():
     email = json.loads(request.data.decode(encoding='UTF-8'))['email']
-    password = json.loads(request.data.decode(encoding='UTF-8'))['password']
+    password = jwt.encode({'password': json.loads(request.data.decode(encoding='UTF-8'))['password']}, os.environ.get('SECRET', 'DEV'), algorithm='HS256')
     if db.users.find({'email': email, 'password': password}).count() == 1:
         login_user(email)
         return dumps(db.playlists.find({'users': { '$all': [email]}}, {'name': 1, 'videos': 1, '_id': 1}))
