@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, url_for, redirect, flash
 import flask_login
 import pdb
@@ -110,7 +111,7 @@ def create_session():
 @app.route('/signout', methods=['POST', 'GET'])
 def logout_user():
     flask_login.logout_user()
-    return redirect('/')
+    return redirect(url_for('index'), 200)
 
 @app.route('/protected')
 @flask_login.login_required
@@ -119,4 +120,6 @@ def private_zone():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.debug = True
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)

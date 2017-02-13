@@ -1,15 +1,19 @@
 angular.module('playlister')
-  .controller('Account', ['$scope', function($scope) {
+  .controller('Account', ['$scope', '$rootScope', function($scope, $rootScope) {
     window.onbeforeunload = function(){
       $scope.$apply(function(){
         $scope.signinerror = false
       })
       $scope.signout()
     }
+    $scope.currentState = 'signin'
     $scope.signinerror = false
     $scope.signedin = false
     $scope.printScope = () => {
       console.log($scope)
+    }
+    $scope.switchState = (state) => {
+      $scope.currentState = state
     }
     $scope.signup = () => {
       axios({method: 'POST', url: '/users',
@@ -52,13 +56,12 @@ angular.module('playlister')
         }
       })
     }
-    $scope.signout = () => {
+    $scope.$on('signout', function(){
       axios.post('/signout').then(result=>{
         $scope.$apply(function(){
           $scope.signedin = false
           $scope.signedinerror = false
-          $scope.$parent.$broadcast('signedout')
         })
       })
-    }
+    })
   }])

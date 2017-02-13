@@ -16,11 +16,17 @@
     <script type="text/javascript" src={{ url_for('static', filename='js/playlists.js') }}></script>
   </head>
   <body ng-app='playlister'>
-    <h1>Playlister</h1>
+    <h1 style='text-align: center;'>Playlister</h1>
     <nav id='playlists' ng-controller='Playlist'>
-      <button ng-click='printScope()'>Scope</button><br>
       <nav ng-if='signedin'>
-        <h2>Welcome, {a email a}!</h2>
+        <h2>
+          <!-- <button ng-click='printScope()'>Scope</button><br> -->
+          <form id='signout' ng-submit='signout()'>
+            Welcome, {a email a}!
+            <input type='submit' value='Sign Out'></input>
+          </form>
+          </section>
+        </h2>
         <section class='search three columns offset-by-one column'>
           <input ng-model='$parent.searchTerm' placeholder="Artist/Song/Album"></input>
           <button ng-click="searchVideos()">Search</button>
@@ -31,7 +37,7 @@
               <br>
               <youtube-video video-id='vid.id.videoId' player-width="'200px'" player-height="'150px'" ></youtube-video>
               <br>
-              <button ng-click='addVideo(vid.id.videoId, vid.snippet.title)'>Add</button>
+              <button class='sidebtn' ng-click='addVideo(vid.id.videoId, vid.snippet.title)'><img class='add' src={{ url_for('static', filename='img/add.png') }}></img></button>
             </p>
           </div>
         </section>
@@ -59,25 +65,27 @@
       </nav>
     </nav>
     <nav id='accounting' ng-controller='Account'>
-      <section id='accounting' ng-if='!signedin'>
-        <form ng-submit='signup()'>
+      <!-- <button ng-click='printScope()'>Scope</button><br> -->
+      <section style='text-align: center;' id='accounting' ng-if='!signedin'>
+        <button ng-click="switchState('signin')">Sign In</button>
+        <button ng-click="switchState('signup')">Sign Up</button>
+        <form ng-if="currentState === 'signup'" ng-submit='signup()'>
           <h2>Sign Up</h2>
-          <label>Username: </label><input name='email' ng-model='$parent.uemail' placeholder="email"></input>
-          <label>Password: </label><input  name='password' ng-model='$parent.upassword' placeholder="password"></input>
+          <label>Username: </label><input name='email' ng-model='$parent.$parent.uemail' placeholder="email"></input>
+          <label>Password: </label><input  name='password' ng-model='$parent.$parent.upassword' placeholder="password"></input>
+          <br>
           <input type='submit'></input>
           <p ng-if='signuperror'>This email already exists</p>
         </form>
-        <h2>Sign In</h2>
-        <form ng-submit='signin()'>
-          <label>Username: </label><input ng-model='$parent.iemail' name='email' placeholder="email"></input>
-          <label>Password: </label><input  ng-model='$parent.ipassword' name='password' placeholder="password"></input>
+        <form ng-if="currentState === 'signin'" ng-submit='signin()'>
+          <h2>Sign In</h2>
+          <label>Username: </label><input ng-model='$parent.$parent.iemail' name='email' placeholder="email"></input>
+          <label>Password: </label><input  ng-model='$parent.$parent.ipassword' name='password' placeholder="password"></input>
+          <br>
           <input type='submit'></input>
           <p ng-if='signinerror'>This email/password combination is invalid</p>
         </form>
       </section>
-      <!-- <form id='signout' ng-submit='signout()' ng-if='signedin'>
-        <input type='submit' value='Sign Out'></input>
-      </form> -->
     </nav>
   </body>
 </html>

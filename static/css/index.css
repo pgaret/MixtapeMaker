@@ -12,11 +12,25 @@
   height: 25px;
 }
 
+.add{
+  width: 50px;
+  height: 50px;
+}
+
 .btn{
   border-style: none;
   width: 25px;
   height: 25px;
   margin: 0% -2%;
+}
+
+.sidebtn{
+  border-style: none;
+  width: 25px;
+  height: 25px;
+  margin: 0% -2%;
+  padding-left: 40%;
+  width: 10%;
 }
 
 .search{
@@ -25,5 +39,5 @@
 
 .search.list{
   overflow: scroll;
-  height: 75vh;  
+  height: 75vh;
 }

@@ -1,5 +1,5 @@
 angular.module('playlister')
-  .controller('Playlist', ['$scope', '$timeout', function($scope, $timeout){
+  .controller('Playlist', ['$scope', '$timeout', '$rootScope', function($scope, $timeout, $rootScope){
     $scope.signedin = false
     $scope.modifying = false
     $scope.currentPlaylist = false
@@ -75,7 +75,11 @@ angular.module('playlister')
         else {
           console.log("failure to delete")
         }
-    })
+      })
+    }
+    $scope.signout = () => {
+      $rootScope.$broadcast('signout')
+      $scope.signedin = false
     }
     $scope.modifyingList = () => { $scope.modifying = true }
     $scope.$on('signedin', function(event, next, current){
@@ -84,6 +88,5 @@ angular.module('playlister')
       $scope.signedin = true
       $scope.currentPlaylist = $scope.playlists[0]
     })
-    $scope.$on('signedout', function(){ $scope.signedin = false })
     $scope.printScope = () => { console.log($scope) }
   }])
