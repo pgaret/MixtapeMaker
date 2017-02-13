@@ -1,2 +1,5 @@
-# Playlister
-Web app for creating playlists manually or based on setlists, and getting concert recommendations based on the playlists
+# MixtapeMaker
+
+Create playlists, search Youtube for videos, and add videos to the playlist.
+
+Built with Angular/Flask/MongoDB.
