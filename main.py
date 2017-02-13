@@ -23,7 +23,7 @@ client = MongoClient(uri)
 login_manager = flask_login.LoginManager()
 
 login_manager.init_app(app)
-db = client.playlister
+db = client.get_default_database()
 
 class User(flask_login.UserMixin):
     pass
