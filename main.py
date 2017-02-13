@@ -5,14 +5,22 @@ import pdb
 import json
 # from './user.py' import User
 import pymongo
-from pymongo import MongoClient
+from urlparse import urlsplit
+from pymongo import MongoClient, Connection
 from bson.json_util import dumps
 from bson.objectid import ObjectId
 import jwt
 
 app = Flask(__name__)
 app.secret_key = 'Qx%3Zv@y#m%8Ez@+wUFgH5_enQAgtX'
-client = MongoClient()
+
+# url = os.getenv('mongodb://pgaret:Playlister2017@ds161255.mlab.com:61255/heroku_x76z7c79', 'mongodb://localhost:27017/playlister')
+# parsed = urlsplit(url)
+# db_name = parsed.path[1]
+
+uri = 'mongodb://pgaret:Playlister2017@ds161255.mlab.com:61255/heroku_x76z7c79'
+
+client = MongoClient(uri)
 login_manager = flask_login.LoginManager()
 
 login_manager.init_app(app)
