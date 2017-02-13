@@ -47,6 +47,7 @@
           <input type='submit'></input>
           <p ng-if='playlisterror'>A playlist with this name already exists</p>
         </form>
+        <br>
         <ul class='navbar' ng-repeat='playlist in playlists'>
           <li><button ng-click='changePlaylist($index)'>{a playlist.name a}</button></li>
         </ul>
@@ -72,7 +73,7 @@
         <form ng-if="currentState === 'signup'" ng-submit='signup()'>
           <h2>Sign Up</h2>
           <label>Username: </label><input name='email' ng-model='$parent.$parent.uemail' placeholder="email"></input>
-          <label>Password: </label><input  name='password' ng-model='$parent.$parent.upassword' placeholder="password"></input>
+          <label>Password: </label><input  name='password' type='password' ng-model='$parent.$parent.upassword' placeholder="password"></input>
           <br>
           <input type='submit'></input>
           <p ng-if='signuperror'>This email already exists</p>
@@ -80,7 +81,7 @@
         <form ng-if="currentState === 'signin'" ng-submit='signin()'>
           <h2>Sign In</h2>
           <label>Username: </label><input ng-model='$parent.$parent.iemail' name='email' placeholder="email"></input>
-          <label>Password: </label><input  ng-model='$parent.$parent.ipassword' name='password' placeholder="password"></input>
+          <label>Password: </label><input  ng-model='$parent.$parent.ipassword' type='password' name='password' placeholder="password"></input>
           <br>
           <input type='submit'></input>
           <p ng-if='signinerror'>This email/password combination is invalid</p>

@@ -15,6 +15,7 @@ angular.module('playlister')
             $scope.$apply(function(){
               $scope.playlists.push({name: $scope.playlistName, dbId: result.data[0]._id.$oid, videos: []})
               $scope.currentPlaylist = $scope.playlists[$scope.playlists.length - 1]
+              $scope.modifying = false
           }) } else {
             $scope.$apply(function(){ $scope.playlisterror = true; }) } })
     }
