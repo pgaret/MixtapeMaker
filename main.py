@@ -12,8 +12,8 @@ import jwt
 app = Flask(__name__)
 app.secret_key = 'Qx%3Zv@y#m%8Ez@+wUFgH5_enQAgtX'
 
-# uri = 'mongodb://pgaret:Playlister2017@ds151289.mlab.com:51289/heroku_hpzk22fl'
-uri = 'mongodb://localhost:27017/playlister'
+uri = 'mongodb://pgaret:Playlister2017@ds151289.mlab.com:51289/heroku_hpzk22fl'
+# uri = 'mongodb://localhost:27017/playlister'
 
 client = MongoClient(uri)
 login_manager = flask_login.LoginManager()
