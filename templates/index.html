@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Flask</title>
-    <link rel="shortcut_icon" href={{ url_for('static', filename='img/favicon.ico') }}>
+    <link rel="shortcut icon" href={{ url_for('static', filename='favicon.ico') }}>
     <link rel="stylesheet" href={{ url_for('static', filename='css/skeleton.css') }}>
     <link rel="stylesheet" href={{ url_for('static', filename='css/index.css') }}>
     <script src="//www.youtube.com/iframe_api"></script>
@@ -37,7 +37,8 @@
               <br>
               <youtube-video video-id='vid.id.videoId' player-width="'200px'" player-height="'150px'" ></youtube-video>
               <br>
-              <button class='sidebtn' ng-click='addVideo(vid.id.videoId, vid.snippet.title)'><img class='add' src={{ url_for('static', filename='img/add.png') }}></img></button>
+              <button class='sidebtn' ng-click='addVideo(vid.id.videoId, vid.snippet.title, $index)'><img class='add' src={{ url_for('static', filename='img/add.png') }}></img></button>
+              <p ng-if='addedVideo.includes($index)'>Added video to {a currentPlaylist.name a}
             </p>
           </div>
         </section>
@@ -59,7 +60,6 @@
               <br>{a parseName(vid.name) a}<br>
               <button class='btn' ng-attr-id="{a 'play'+($index+1) a}" ng-click='video.playVideo()'><img class='play' src={{ url_for('static', filename='img/play.png') }}></img></button>
               <button class='btn' ng-click='removeVideo(vid.name)'><img class='play' src={{ url_for('static', filename='img/delete.png') }}></img></button>
-              <!-- <button ng-click='test.stopVideo()'>Stop</button> -->
             </div>
             </span>
         </section>

@@ -4,7 +4,7 @@ angular.module('playlister')
       $scope.$apply(function(){
         $scope.signinerror = false
       })
-      $scope.signout()
+      $rootScope.$broadcast('signout')
     }
     $scope.currentState = 'signin'
     $scope.signinerror = false
@@ -39,13 +39,15 @@ angular.module('playlister')
       axios({method: 'POST', url: '/sessions',
         data: {'email': $scope.iemail, 'password': $scope.ipassword}
       }).then(result=>{
+        $scope.upassword = ""; $scope.ipassword = "";
         if (result.status === 200){
           $scope.$apply(function(){
             $scope.$parent.$broadcast('signedin', {email: $scope.iemail, data: result.data})
-            $scope.iemail = ""; $scope.ipassword = "", $scope.uemail = ""; $scope.upassword = "";
+            $scope.iemail = "";  $scope.uemail = "";
             $scope.signedin = true
             $scope.signinerror = false
             $scope.signuperror = false
+            $scope.currentState = 'signin'
           })
         } else {
           $scope.$apply(function(){

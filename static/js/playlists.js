@@ -4,6 +4,14 @@ angular.module('playlister')
     $scope.modifying = false
     $scope.currentPlaylist = false
     $scope.gotVideos = false
+    $scope.addedVideo = []
+    window.onbeforeunload = function(){
+      $scope.$apply(function(){
+        $scope.playlists = []
+        $scope.videos = []
+      })
+      $rootScope.$broadcast('signout')
+    }
     $scope.createPlaylist = () => {
       axios({method: 'POST', url: '/playlists',
             data: {'playlistName': $scope.playlistName}
@@ -20,6 +28,7 @@ angular.module('playlister')
       $scope.currentPlaylist = $scope.playlists[index]
     }
     $scope.searchVideos = () => {
+      $scope.addedVideo = []
       let API_KEY= 'AIzaSyDCpSBcCWvzr4mqRS5b6LwYFwD6C9Nx_z4'
       axios.get(`https://www.googleapis.com/youtube/v3/search?q=${$scope.searchTerm}&part=snippet&key=${API_KEY}&type=video`)
           .then(result =>{
@@ -46,13 +55,14 @@ angular.module('playlister')
     $scope.getIframeSrc = function(src){
       return 'https://www.youtube.com/embed/'+src
     }
-    $scope.addVideo = (videoId, videoName) => {
+    $scope.addVideo = (videoId, videoName, index) => {
       axios({method: 'POST', url: `/playlists/`+$scope.currentPlaylist.dbId,
               data: {'videoId': videoId, 'videoName': videoName}
     }).then(result=>{
       if (result.status === 200) {
         $scope.$apply(function(){
           $scope.currentPlaylist.videos.push({name: videoName, ytId: videoId, dbId: result.data[0]._id.$oid})
+          $scope.addedVideo.push(index)
         })
       }
       else { $scope.$apply( () =>  { $scope.addVideoError = true }) }

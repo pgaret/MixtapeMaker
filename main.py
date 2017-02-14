@@ -100,8 +100,10 @@ def add_user():
 @app.route("/sessions", methods=['POST'])
 def create_session():
     email = json.loads(request.data.decode(encoding='UTF-8'))['email']
-    password = jwt.encode({'password': json.loads(request.data.decode(encoding='UTF-8'))['password']}, os.environ.get('SECRET', 'DEV'), algorithm='HS256')
-    if db.users.find({'email': email, 'password': password}).count() == 1:
+    password = json.loads(request.data.decode(encoding='UTF-8'))['password']
+    db_pw = jwt.decode(db.users.find().limit(1).sort('_id', pymongo.DESCENDING).next()['password'], os.environ.get('SECRET', 'DEV'), algorithm='HS256')
+    # pdb.set_trace()
+    if db.users.find({'email': email}).count() == 1 and db_pw['password'] == password:
         login_user(email)
         return dumps(db.playlists.find({'users': { '$all': [email]}}, {'name': 1, 'videos': 1, '_id': 1}))
     else:
