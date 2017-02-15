@@ -102,7 +102,6 @@ def add_user():
 def create_session():
     email = json.loads(request.data.decode(encoding='UTF-8'))['email']
     password = json.loads(request.data.decode(encoding='UTF-8'))['password']
-    pdb.set_trace()
     if db.users.find({'email': email}).count() == 1:
         db_pw = db.users.find({'email': email}).next()['password']
         if is_prod or not is_prod:
