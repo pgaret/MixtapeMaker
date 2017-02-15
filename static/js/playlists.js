@@ -5,13 +5,6 @@ angular.module('mixtapemaker')
     $scope.modifying = false
     $scope.currentPlaylist = false
     $scope.gotVideos = false
-    window.onbeforeunload = function(){
-      $scope.$apply(function(){
-        // $scope.playlists = []
-        // $scope.videos = []
-      })
-      $rootScope.$broadcast('signout')
-    }
     $scope.createPlaylist = () => {
       axios({method: 'POST', url: '/playlists',
             data: {'playlistName': $scope.playlistName}
@@ -83,6 +76,7 @@ angular.module('mixtapemaker')
         }
       })
     }
+    $scope.$on('signout', function() { $scope.signout() })
     $scope.signout = () => {
       $scope.signedin = false
       $rootScope.$broadcast('signout')

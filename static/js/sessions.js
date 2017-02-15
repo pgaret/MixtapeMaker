@@ -1,13 +1,5 @@
 angular.module('mixtapemaker')
   .controller('Account', ['$scope', '$rootScope', function($scope, $rootScope) {
-    window.onbeforeunload = function(){
-      $scope.$apply(function(){
-        // $scope.signinerror = false
-        // $scope.signuperror = false
-        // $scope.iemail = ''; $scope.uemail = ''; $scope.ipassword = ''; $scope.upassword = '';
-      })
-      $rootScope.$broadcast('signout')
-    }
     $scope.currentState = 'signin'
     $scope.signinerror = false
     $scope.signedin = false
@@ -61,12 +53,9 @@ angular.module('mixtapemaker')
       })
     }
     $scope.$on('signout', function(){
-      axios.post('/signout').then(result=>{
-        $scope.$apply(function(){
-          $scope.signedin = false
-          $scope.signinerror = false
-          $scope.signuperror = false
-        })
-      })
+      $scope.signedin = false
+      $scope.signinerror = false
+      $scope.signuperror = false
+      $scope.iemail = ""; $scope.uemail = ""; $scope.ipassword = ""; $scope.upassword = ""
     })
   }])

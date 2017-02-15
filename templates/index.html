@@ -58,14 +58,16 @@
     <section id='search' ng-controller='Searcher'>
       <article ng-if='searching' id='searchYoutube'>
         <section class='search eight columns offset-by-two columns translucent'>
-          <h3>Search YouTube</h3>
+          <h3>
+            Search YouTube
+            <button ng-click="end()"><img class='btn play' src={{ url_for('static', filename='img/delete.png') }}></img></button>
+          </h3>
           <input ng-model='$parent.key' placeholder="Artist/Song/Album"></input>
           <button ng-click="searchVideos()">Go</button>
-          <button ng-click="end()">X</button>
           <br>
           <div ng-if='result' class="search list">
             <span ng-repeat='vid in result'>
-              <span class='four columns translucent'>
+              <span class='four columns'>
                 {a parseName(vid.snippet.title) a}
                 <br>
                 <youtube-video video-id='vid.id.videoId' player-width="'200px'" player-height="'150px'" ></youtube-video>

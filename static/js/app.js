@@ -11,3 +11,10 @@ angular.module('mixtapemaker', ['youtube-embed'])
         'https://www.youtube.com/**'
       ])
   })
+  .controller('Main', ['$scope', '$rootScope', function($scope, $rootScope){
+    window.onbeforeunload = function(){
+      axios.post('/signout').then(result=>{
+        $rootScope.$broadcast('signout')
+      })
+    }
+  }])
