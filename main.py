@@ -90,7 +90,8 @@ def add_user():
     email = json.loads(request.data.decode(encoding='UTF-8'))['email']
     if db.users.find({'email': email}).count() == 0:
         password = json.loads(request.data.decode(encoding='UTF-8'))['password']
-        password = jwt.encode({'password': password}, os.environ.get('SECRET', 'DEV'), algorithm='HS256')
+        if is_prod:
+            password = jwt.encode({'password': password}, os.environ.get('SECRET', 'DEV'), algorithm='HS256')
         db.users.insert({'email': email, 'password': password})
         login_user(email)
         return redirect(url_for('index'), 200)
@@ -101,13 +102,15 @@ def add_user():
 def create_session():
     email = json.loads(request.data.decode(encoding='UTF-8'))['email']
     password = json.loads(request.data.decode(encoding='UTF-8'))['password']
-    db_pw = jwt.decode(db.users.find().limit(1).sort('_id', pymongo.DESCENDING).next()['password'], os.environ.get('SECRET', 'DEV'), algorithm='HS256')
     # pdb.set_trace()
-    if db.users.find({'email': email}).count() == 1 and db_pw['password'] == password:
-        login_user(email)
-        return dumps(db.playlists.find({'users': { '$all': [email]}}, {'name': 1, 'videos': 1, '_id': 1}))
-    else:
-        return redirect(url_for('index'), 205)
+    if db.users.find({'email': email}).count() == 1:
+        db_pw = db.users.find({'email': email}).next()['password']
+        if is_prod:
+            db_pw = jwt.decode(db_pw, os.environ.get('SECRET', 'DEV'), algorithm='HS256')
+        if db_pw == password:
+            login_user(email)
+            return dumps(db.playlists.find({'users': { '$all': [email]}}, {'name': 1, 'videos': 1, '_id': 1}))
+    return redirect(url_for('index'), 205)
 
 @app.route('/signout', methods=['POST', 'GET'])
 def logout_user():

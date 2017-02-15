@@ -1,4 +1,4 @@
-angular.module('playlister', ['youtube-embed'])
+angular.module('mixtapemaker', ['youtube-embed'])
   .config(['$interpolateProvider', function($interpolateProvider) {
     $interpolateProvider.startSymbol('{a')
     $interpolateProvider.endSymbol('a}')

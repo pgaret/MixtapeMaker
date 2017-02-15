@@ -1,14 +1,14 @@
-angular.module('playlister')
+angular.module('mixtapemaker')
   .controller('Playlist', ['$scope', '$timeout', '$rootScope', function($scope, $timeout, $rootScope){
     $scope.signedin = false
+    $scope.searching = false
     $scope.modifying = false
     $scope.currentPlaylist = false
     $scope.gotVideos = false
-    $scope.addedVideo = []
     window.onbeforeunload = function(){
       $scope.$apply(function(){
-        $scope.playlists = []
-        $scope.videos = []
+        // $scope.playlists = []
+        // $scope.videos = []
       })
       $rootScope.$broadcast('signout')
     }
@@ -27,16 +27,9 @@ angular.module('playlister')
     $scope.changePlaylist = (index) => {
       $scope.currentPlaylist = $scope.playlists[index]
     }
-    $scope.searchVideos = () => {
-      $scope.addedVideo = []
-      let API_KEY= 'AIzaSyDCpSBcCWvzr4mqRS5b6LwYFwD6C9Nx_z4'
-      axios.get(`https://www.googleapis.com/youtube/v3/search?q=${$scope.searchTerm}&part=snippet&key=${API_KEY}&type=video`)
-          .then(result =>{
-              $scope.$apply(function(){
-                  $scope.result = result.data.items
-                  $scope.gotVideos = true
-              })
-          })
+    $scope.search = () => {
+      $scope.searching = true
+      $rootScope.$broadcast('searching')
     }
     $scope.$on('youtube.player.ended', function($event, player){
       let nextVideo = player.g >= $scope.currentPlaylist.videos.length ? 'play1' : 'play'+(player.g+1)
@@ -55,18 +48,22 @@ angular.module('playlister')
     $scope.getIframeSrc = function(src){
       return 'https://www.youtube.com/embed/'+src
     }
-    $scope.addVideo = (videoId, videoName, index) => {
+    $scope.$on('addVideo', function(event, next, current){
+      // debugger
       axios({method: 'POST', url: `/playlists/`+$scope.currentPlaylist.dbId,
-              data: {'videoId': videoId, 'videoName': videoName}
+              data: {'videoId': next.ytId, 'videoName': next.name}
     }).then(result=>{
       if (result.status === 200) {
+        $rootScope.$broadcast('addedVideo', {index: next.index})
         $scope.$apply(function(){
-          $scope.currentPlaylist.videos.push({name: videoName, ytId: videoId, dbId: result.data[0]._id.$oid})
-          $scope.addedVideo.push(index)
+          $scope.currentPlaylist.videos.push({name: next.name, ytId: next.ytId})
         })
       }
       else { $scope.$apply( () =>  { $scope.addVideoError = true }) }
-    })}
+    })})
+    $scope.$on('notsearching', function(){
+      $scope.searching = false
+    })
     $scope.removeVideo = (videoId) => {
       axios({method: 'DELETE', url: '/playlists/'+$scope.currentPlaylist.dbId+"/"+videoId}
       ).then(result=>{

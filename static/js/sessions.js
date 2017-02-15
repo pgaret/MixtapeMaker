@@ -1,8 +1,10 @@
-angular.module('playlister')
+angular.module('mixtapemaker')
   .controller('Account', ['$scope', '$rootScope', function($scope, $rootScope) {
     window.onbeforeunload = function(){
       $scope.$apply(function(){
-        $scope.signinerror = false
+        // $scope.signinerror = false
+        // $scope.signuperror = false
+        // $scope.iemail = ''; $scope.uemail = ''; $scope.ipassword = ''; $scope.upassword = '';
       })
       $rootScope.$broadcast('signout')
     }
@@ -62,7 +64,8 @@ angular.module('playlister')
       axios.post('/signout').then(result=>{
         $scope.$apply(function(){
           $scope.signedin = false
-          $scope.signedinerror = false
+          $scope.signinerror = false
+          $scope.signuperror = false
         })
       })
     })

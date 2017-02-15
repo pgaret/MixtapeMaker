@@ -1,10 +1,72 @@
-.navbar{
-  display: inline-block;
-  list-style-type: none;
+@font-face {
+  font-family: UrbanJungle;
+  src: url(UrbanJungleDEMO.otf);
 }
 
-.playlist{
-  /*width: 19%;*/
+* {
+  margin: 0;
+  padding: 0;
+}
+
+h1{
+  font-family: UrbanJungle;
+  background-color: rgba(0, 0, 0, .5);
+}
+
+.login{
+  width: 90%;
+  border-radius: 5px;
+  margin-left: 5%;
+  margin-top: -3%;
+  margin-bottom: 5%;
+  padding-top: 2%;
+  font-size: 4vw;
+}
+
+body{
+  background: url('../img/login_bg.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.translucent{
+  background-color: rgba(255, 255, 255, .85);
+  border-radius: 15px;
+}
+
+#accounting{
+  margin-top: 5%;
+  margin-left: 33%;
+  width: 33%;
+  padding: 2% 0%;
+
+}
+
+.navbar{
+  list-style-type: none;
+  width: 70%;
+  margin-left: 15%;
+}
+
+button{
+  background-color: white;
+}
+
+input[type='submit']{
+  background-color: white;
+}
+
+.plbtn{
+  background-color: rgba(0, 0, 0, .9);
+  color: lightgrey;
+  padding: 6px 12px;
+  font-size: 1.75em;
+  display: inline-flex;
+}
+
+.plbtn:hover{
+  background-color: rgba(75, 75, 75, .9);
 }
 
 .play{
@@ -21,7 +83,7 @@
   border-style: none;
   width: 25px;
   height: 25px;
-  margin: 0% -2%;
+  /*margin: 0% -2%;*/
 }
 
 .sidebtn{
@@ -34,7 +96,7 @@
 }
 
 .search{
-  float:right;
+  /*float:right;*/
 }
 
 .search.list{
