@@ -38,7 +38,7 @@
           <section class='search eight columsn offset-by-two columns translucent'>
             <h3>
               {a currentPlaylist.name a}
-              <button ng-click='search()'>Add Song</button>
+              <button ng-if='currentPlaylist' ng-click='search()'>Add Song</button>
             </h3>
             <section ng-if='currentPlaylist.videos.length > 0'>
               <span ng-repeat='vid in currentPlaylist.videos'>
