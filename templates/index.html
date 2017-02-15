@@ -93,6 +93,7 @@
           <label>Password: </label><input  name='password' type='password' ng-model='$parent.$parent.upassword' placeholder="password"></input>
           <br>
           <input type='submit'></input>
+          <p ng-if='signingup'>Signing you up...</p>
           <p ng-if='signuperror'>This email already exists</p>
         </form>
         <form ng-if="currentState === 'signin'" ng-submit='signin()'>
@@ -101,6 +102,7 @@
           <label>Password: </label><input  ng-model='$parent.$parent.ipassword' type='password' name='password' placeholder="password"></input>
           <br>
           <input type='submit'></input>
+          <p ng-if='signingin'>Signing you in...</p>
           <p ng-if='signinerror'>This email/password combination is invalid</p>
         </form>
       </section>
