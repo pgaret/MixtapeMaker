@@ -10,7 +10,8 @@ angular.module('mixtapemaker')
       axios.get(`https://www.googleapis.com/youtube/v3/search?q=${$scope.key}&part=snippet&key=${API_KEY}&type=video`)
           .then(result =>{
               $scope.$apply(function(){
-                  $scope.result = result.data.items
+                $scope.addedVideos = []
+                $scope.result = result.data.items
               })
           })
     }
@@ -21,8 +22,9 @@ angular.module('mixtapemaker')
       $scope.addedVideos.push(next.index)
     })
     $scope.end = () => {
-      $scope.addedVideos = []
       $scope.searching = false
+      $scope.addedVideos = []
+      $scope.result = []
       $rootScope.$broadcast('notsearching')
     }
   }])

@@ -33,6 +33,7 @@ angular.module('mixtapemaker')
     }
     $scope.$on('youtube.player.ended', function($event, player){
       let nextVideo = player.g >= $scope.currentPlaylist.videos.length ? 'play1' : 'play'+(player.g+1)
+      // debugger
       $timeout(function(){
         // debugger
         document.getElementById(nextVideo).click()
@@ -83,11 +84,11 @@ angular.module('mixtapemaker')
       })
     }
     $scope.signout = () => {
-      $rootScope.$broadcast('signout')
       $scope.signedin = false
+      $rootScope.$broadcast('signout')
       $scope.playlists = []
     }
-    $scope.modifyingList = () => { $scope.modifying = true }
+    $scope.modifyingList = () => { $scope.modifying = !$scope.modifying }
     $scope.$on('signedin', function(event, next, current){
       $scope.email = next.email
       $scope.playlists = []

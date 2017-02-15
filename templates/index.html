@@ -21,13 +21,14 @@
       <section ng-if='signedin && !searching'>
         <h1>MixtapeMaker</h1>
         <!-- <button ng-click='printScope()'>Scope</button><br> -->
-        <button ng-click='signout()'>Sign Out</button>
         <section id='myPlaylists'>
           <ul class='navbar translucent'>
+            <button ng-click='signout()'>Sign Out</button>
             <button ng-if='!modifying' ng-click='modifyingList()'>Add a Playlist</button>
             <form ng-submit='createPlaylist()' ng-if='modifying'>
               <input type='text' ng-model='$parent.$parent.playlistName' placeholder='Name'></input>
               <input type='submit'></input>
+              <button ng-click='modifyingList()'>Cancel</button>
               <p ng-if='playlisterror'>A playlist with this name already exists</p>
             </form>
             <br ng-if='!modifying'>
@@ -35,45 +36,50 @@
               <li class='plbtn' ng-click='changePlaylist($index)'>{a playlist.name a}</li>
             </span>
           </ul>
-          <h3>{a currentPlaylist.name a}</h3><button ng-click='search()'>Add Song</button>
-          <section class='currentPlaylist translucent' ng-if='currentPlaylist.videos.length > 0'>
-            <span ng-repeat='vid in currentPlaylist.videos'>
-              <span class='four columns translucent'>
-                <youtube-video video-id='vid.ytId' player-width="'300px'" player-height="'200px'" player='video'></youtube-video>
-                <br>{a parseName(vid.name) a}<br>
-                <button class='btn' ng-attr-id="{a 'play'+($index+1) a}" ng-click='video.playVideo()'><img class='play' src={{ url_for('static', filename='img/play.png') }}></img></button>
-                <button class='btn' ng-click='removeVideo(vid.name)'><img class='play' src={{ url_for('static', filename='img/delete.png') }}></img></button>
+          <section class='search eight columsn offset-by-two columns translucent'>
+            <h3>
+              {a currentPlaylist.name a}
+              <button ng-click='search()'>Add Song</button>
+            </h3>
+            <section ng-if='currentPlaylist.videos.length > 0'>
+              <span ng-repeat='vid in currentPlaylist.videos'>
+                <span class='four columns video'>
+                  <youtube-video video-id='vid.ytId' player-width="'300px'" player-height="'200px'" player='video'></youtube-video>
+                  <br>{a parseName(vid.name) a}<br>
+                  <button class='btn' ng-attr-id="{a 'play'+($index+1) a}" ng-click='video.playVideo()'><img class='play' src={{ url_for('static', filename='img/play.png') }}></img></button>
+                  <button class='btn' ng-click='removeVideo(vid.name)'><img class='play' src={{ url_for('static', filename='img/delete.png') }}></img></button>
+                </span>
               </span>
-            </span>
+            </section>
+          </section>
         </section>
       </section>
     </section>
-  </section>
-  <section id='search' ng-controller='Searcher'>
-    <article ng-if='searching' id='searchYoutube'>
-      <section class='search eight columns offset-by-two columns translucent'>
-        <h3>Search YouTube</h3>
-        <input ng-model='$parent.key' placeholder="Artist/Song/Album"></input>
-        <button ng-click="searchVideos()">Go</button>
-        <button ng-click="end()">X</button>
-        <br>
-        <div ng-if='result' class="search list">
-          <span ng-repeat='vid in result'>
-            <span class='four columns translucent'>
-              {a parseName(vid.snippet.title) a}
-              <br>
-              <youtube-video video-id='vid.id.videoId' player-width="'200px'" player-height="'150px'" ></youtube-video>
-              <br>
-              <button ng-if='!addedVideos.includes($index)' class='sidebtn' ng-click='addVideo(vid.id.videoId, vid.snippet.title, $index)'>
-                <img class='add' src={{ url_for('static', filename='img/add.png') }}></img>
-              </button>
-              <p ng-if='addedVideos.includes($index)'>Added video</p>
+    <section id='search' ng-controller='Searcher'>
+      <article ng-if='searching' id='searchYoutube'>
+        <section class='search eight columns offset-by-two columns translucent'>
+          <h3>Search YouTube</h3>
+          <input ng-model='$parent.key' placeholder="Artist/Song/Album"></input>
+          <button ng-click="searchVideos()">Go</button>
+          <button ng-click="end()">X</button>
+          <br>
+          <div ng-if='result' class="search list">
+            <span ng-repeat='vid in result'>
+              <span class='four columns translucent'>
+                {a parseName(vid.snippet.title) a}
+                <br>
+                <youtube-video video-id='vid.id.videoId' player-width="'200px'" player-height="'150px'" ></youtube-video>
+                <br>
+                <button class='sidebtn' ng-click='addVideo(vid.id.videoId, vid.snippet.title, $index)'>
+                  <img class='add' src={{ url_for('static', filename='img/add.png') }}></img>
+                </button>
+                <img ng-if='addedVideos.includes($index)' class='add' src={{ url_for('static', filename='img/check.png') }}></img>
+              </span>
             </span>
-          </span>
-        </div>
-      </section>
-    </article>
-  </section>
+          </div>
+        </section>
+      </article>
+    </section>
     <nav class='translucent' id='accounting' ng-controller='Account'>
       <!-- <button ng-click='printScope()'>Scope</button><br> -->
       <section style='text-align: center;' ng-if='!signedin'>
