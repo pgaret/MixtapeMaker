@@ -53,6 +53,15 @@ angular.module('mixtapemaker')
         return name
       }
     }
+    $scope.imgStyle = (index) => {
+      if (index % 3 === 0){
+        return {}
+      } else if (index % 3 === 1){
+        return {margin: '0 2%'}
+      } else {
+        return {margin: '0'}
+      }
+    }
     $scope.imgUrl = (id) => {
       return 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'
     }

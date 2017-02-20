@@ -42,7 +42,7 @@
               {a currentPlaylist.name a}
               <button ng-if='currentPlaylist' ng-click='search()'>Add Song</button>
             </h3>
-            <article ng-if='currentPlaylist.videos.length > 0' ng-repeat='vid in currentPlaylist.videos' class='four columns video'>
+            <article ng-if='currentPlaylist.videos.length > 0' ng-repeat='vid in currentPlaylist.videos' class='four columns video' ng-style='imgStyle($index)'>
               <div class='video--vidName'>{a parseName(vid.name) a}</div>
               <div ng-if='$index === currentVideo' class='video--iframe'>
                 <youtube-video video-id='vid.ytId' player-width="'300px'" player-height="'200px'" player='video'></youtube-video>
