@@ -58,8 +58,8 @@ h1{
   position: absolute;
   z-index: 2;
   opacity: .75;
-  left: 125px;
-  top: 80px;
+  left: 35%;
+  top: 40%;
 }
 
 .video--vidName{
@@ -68,9 +68,13 @@ h1{
   text-align: center;
   z-index: 5;
   background-color: white;
-  top: 26px;
-  height: 26px;
+  top: 50%;
+  height: 50%;
   width: 85%;
+  font-size: 1.2vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #accounting{

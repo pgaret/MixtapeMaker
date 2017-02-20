@@ -9,7 +9,6 @@ angular.module('mixtapemaker')
       let API_KEY= 'AIzaSyDCpSBcCWvzr4mqRS5b6LwYFwD6C9Nx_z4'
       axios.get(`https://www.googleapis.com/youtube/v3/search?q=${$scope.key}&part=snippet&key=${API_KEY}&type=video`)
           .then(result =>{
-            debugger
             $scope.$apply(function(){
               $scope.addedVideos = []
               $scope.result = result.data.items

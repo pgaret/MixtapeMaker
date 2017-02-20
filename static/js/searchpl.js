@@ -8,7 +8,7 @@ angular.module('mixtapemaker')
     $scope.end = () => {
       $scope.searching = false
       $scope.addedPlaylists = []
-      $rootScope.$broadcast('endsearchpl')
+      $rootScope.$broadcast('notsearching')
     }
     $scope.searchMixtapes = () => {
       axios({method: 'GET', url:'/playlists/search/'+$scope.key}).then(result=>{

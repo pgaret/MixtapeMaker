@@ -24,6 +24,7 @@ angular.module('mixtapemaker')
         $rootScope.$broadcast('searchpl')
     }
     $scope.changePlaylist = (index) => {
+      $scope.currentVideo = -1
       $scope.currentPlaylist = $scope.playlists[index]
     }
     $scope.search = () => {
@@ -37,21 +38,15 @@ angular.module('mixtapemaker')
       document.getElementById('img'+index).children[1].src = document.location.href+"static/img/ytPlay.png"
     }
     $scope.$on('youtube.player.ended', function($event, player){
-      debugger
-      let index = $scope.playlists.findIndex(elem=>{return elem===$scope.currentPlaylist})
-      let nextVideo = index >= $scope.currentPlaylist.videos.length-1 ? 'play1' : 'play'+(index+1)
-      // debugger
-      $timeout(function(){
-        // debugger
-        document.getElementById(nextVideo).click()
-      })
-    })
-    $scope.parseName = function(name){
-      if (name.length > 28){
-        return name.substring(0, 28)+"..."
-      } else{
-        return name
+      if ($scope.currentVideo === $scope.currentPlaylist.videos.length - 1){
+        $scope.currentVideo = 0
       }
+      else {
+        $scope.currentVideo +=1
+      }
+    })
+    $scope.startVideo = (index) => {
+      $scope.currentVideo = index
     }
     $scope.imgStyle = (index) => {
       if (index % 3 === 0){
@@ -86,9 +81,7 @@ angular.module('mixtapemaker')
     })})
     $scope.$on('notsearching', function(){
       $scope.searching = false
-    })
-    $scope.$on('endsearchpl', function(){
-      $scope.searching = false
+      $scope.currentVideo = -1
     })
     $scope.$on('addpl', function(event, next){
       axios({method: 'PUTS', url: '/playlists/'+next.plId+"/"+$scope.userId}).then(result=>{
@@ -108,8 +101,8 @@ angular.module('mixtapemaker')
           for (let i = 0; i < $scope.currentPlaylist.videos.length; i++){
             if ($scope.currentPlaylist.videos[i].name === videoId){
               $scope.$apply(()=>{
+                if ($scope.currentVideo === i) { $scope.currentVideo = -1 }
                 $scope.currentPlaylist.videos.splice(i, 1)
-                return null
               })
             }
           }
