@@ -31,13 +31,31 @@ body{
 }
 
 .translucent{
-  background-color: rgba(255, 255, 255, .85);
+  background-color: rgba(239, 240, 241	, .85);
   border-radius: 15px;
 }
 
 .video{
-  padding: 1%;
-  /*background-color: rgba(0, 0, 0, .5);*/
+  /*padding: 1%;*/
+}
+
+.video--placeholder{
+  cursor: pointer;
+}
+
+.video--placeholder-main{
+  width: 15%;
+  position:absolute;
+  z-index: 1;
+}
+
+.video--placeholder-btn{
+  width: 25%;
+  position: relative;
+  z-index: 2;
+  opacity: .75;
+  padding-left: 25%;
+  padding-top: 20%;
 }
 
 #accounting{

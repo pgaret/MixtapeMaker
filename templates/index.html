@@ -13,7 +13,8 @@
     <script type="text/javascript" src={{ url_for('static', filename='js/app.js') }}></script>
     <script type="text/javascript" src={{ url_for('static', filename='js/sessions.js') }}></script>
     <script type="text/javascript" src={{ url_for('static', filename='js/playlists.js') }}></script>
-    <script type="text/javascript" src={{ url_for('static', filename='js/search.js') }}></script>
+    <script type="text/javascript" src={{ url_for('static', filename='js/searchyt.js') }}></script>
+    <script type="text/javascript" src={{ url_for('static', filename='js/searchpl.js') }}></script>
   </head>
   <body style='text-align: center;' ng-app='mixtapemaker'>
     <section id='playlists' ng-controller='Playlist'>
@@ -23,7 +24,8 @@
         <section id='myPlaylists'>
           <ul class='navbar translucent'>
             <button ng-click='signout()'>Sign Out</button>
-            <button ng-if='!modifying' ng-click='modifyingList()'>Add a Playlist</button>
+            <button ng-click='searchPlaylists()'>Search for Mixtapes</button>
+            <button ng-if='!modifying' ng-click='modifyingList()'>Create a Mixtape</button>
             <form ng-submit='createPlaylist()' ng-if='modifying'>
               <input type='text' ng-model='$parent.$parent.playlistName' placeholder='Name'></input>
               <input type='submit'></input>
@@ -43,9 +45,14 @@
             <section ng-if='currentPlaylist.videos.length > 0'>
               <span ng-repeat='vid in currentPlaylist.videos'>
                 <span class='four columns video'>
-                  <youtube-video video-id='vid.ytId' player-width="'300px'" player-height="'200px'" player='video'></youtube-video>
+                  <div ng-if='$index === currentVideo' class='video--iframe'>
+                    <youtube-video video-id='vid.ytId' player-width="'300px'" player-height="'200px'" player='video'></youtube-video>
+                  </div>
+                  <div ng-if='$index !== currentVideo' ng-attr-id="{a 'img'+($index) a}" ng-click='startVideo($index)' class='videoImg' class='video--placeholder' ng-mouseenter='imgMouseOver($index)' ng-mouseleave='imgMouseLeave($index)'>
+                    <img class='video--placeholder-main' ng-src='{a imgUrl(vid.ytId) a}'></img>
+                    <img class='video--placeholder-btn' src={{ url_for('static', filename='img/ytPlay.png') }}></img>
+                  </div>
                   <br>{a parseName(vid.name) a}<br>
-                  <button class='btn' ng-attr-id="{a 'play'+($index+1) a}" ng-click='video.playVideo()'><img class='play' src={{ url_for('static', filename='img/play.png') }}></img></button>
                   <button class='btn' ng-click='removeVideo(vid.name)'><img class='play' src={{ url_for('static', filename='img/delete.png') }}></img></button>
                 </span>
               </span>
@@ -54,7 +61,7 @@
         </section>
       </section>
     </section>
-    <section id='search' ng-controller='Searcher'>
+    <section id='search' ng-controller='SearchYT'>
       <article ng-if='searching' id='searchYoutube'>
         <section class='search eight columns offset-by-two columns translucent'>
           <h3>
@@ -75,6 +82,37 @@
                   <img class='add' src={{ url_for('static', filename='img/add.png') }}></img>
                 </button>
                 <img ng-if='addedVideos.includes($index)' class='add' src={{ url_for('static', filename='img/check.png') }}></img>
+              </span>
+            </span>
+          </div>
+        </section>
+      </article>
+    </section>
+
+    <section id='search' ng-controller='SearchPl'>
+      <article ng-if='searching' id='searchYoutube'>
+        <section class='search eight columns offset-by-two columns translucent'>
+          <h3>
+            Search Mixtapes
+            <button ng-click='printScope()'>Print Scope</button>
+            <button ng-click="end()"><img class='btn play' src={{ url_for('static', filename='img/delete.png') }}></img></button>
+          </h3>
+          <input ng-model='$parent.key' placeholder="Search for Mixtapes"></input>
+          <button ng-click="searchMixtapes()">Go</button>
+          <br>
+          <div ng-if='playlists' class="search list">
+            <span ng-repeat='playlist in playlists'>
+              <span class='four columns'>
+                {a playlist.name a}
+                <br>
+                Users: {a playlist.users.length a}
+                <br>
+                Songs: {a playlist.videos.length a}
+                <br>
+                <button class='sidebtn' ng-click='addPlaylist($index)'>
+                  <img class='add' src={{ url_for('static', filename='img/add.png') }}></img>
+                </button>
+                <img ng-if='addedPlaylists.includes($index)' class='add' src={{ url_for('static', filename='img/check.png') }}></img>
               </span>
             </span>
           </div>

@@ -5,6 +5,8 @@ angular.module('mixtapemaker')
     $scope.modifying = false
     $scope.currentPlaylist = false
     $scope.gotVideos = false
+    $scope.currentVideo = -1
+    $scope.ytImgHover = 'img/ytHover.png'
     $scope.createPlaylist = () => {
       axios({method: 'POST', url: '/playlists',
             data: {'playlistName': $scope.playlistName}
@@ -17,6 +19,10 @@ angular.module('mixtapemaker')
           }) } else {
             $scope.$apply(function(){ $scope.playlisterror = true; }) } })
     }
+    $scope.searchPlaylists = () => {
+        $scope.searching = true
+        $rootScope.$broadcast('searchpl')
+    }
     $scope.changePlaylist = (index) => {
       $scope.currentPlaylist = $scope.playlists[index]
     }
@@ -24,8 +30,16 @@ angular.module('mixtapemaker')
       $scope.searching = true
       $rootScope.$broadcast('searching')
     }
+    $scope.imgMouseOver = (index) => {
+      document.getElementById('img'+index).children[1].src = document.location.href+"static/img/ytHover.png"
+    }
+    $scope.imgMouseLeave = (index) => {
+      document.getElementById('img'+index).children[1].src = document.location.href+"static/img/ytPlay.png"
+    }
     $scope.$on('youtube.player.ended', function($event, player){
-      let nextVideo = player.g >= $scope.currentPlaylist.videos.length ? 'play1' : 'play'+(player.g+1)
+      debugger
+      let index = $scope.playlists.findIndex(elem=>{return elem===$scope.currentPlaylist})
+      let nextVideo = index >= $scope.currentPlaylist.videos.length-1 ? 'play1' : 'play'+(index+1)
       // debugger
       $timeout(function(){
         // debugger
@@ -38,6 +52,9 @@ angular.module('mixtapemaker')
       } else{
         return name
       }
+    }
+    $scope.imgUrl = (id) => {
+      return 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'
     }
     $scope.getIframeSrc = function(src){
       return 'https://www.youtube.com/embed/'+src
@@ -58,6 +75,20 @@ angular.module('mixtapemaker')
     $scope.$on('notsearching', function(){
       $scope.searching = false
     })
+    $scope.$on('endsearchpl', function(){
+      $scope.searching = false
+    })
+    $scope.$on('addpl', function(event, next){
+      axios({method: 'PUTS', url: '/playlists/'+next.plId+"/"+$scope.userId}).then(result=>{
+        if (result.status === 200){
+          debugger
+          $scope.playlists.push(result.data[0])
+        }
+        else {
+          console.log("Nope")
+        }
+      })
+    })
     $scope.removeVideo = (videoId) => {
       axios({method: 'DELETE', url: '/playlists/'+$scope.currentPlaylist.dbId+"/"+videoId}
       ).then(result=>{
@@ -76,15 +107,17 @@ angular.module('mixtapemaker')
         }
       })
     }
-    $scope.$on('signout', function() { $scope.signout() })
-    $scope.signout = () => {
+    $scope.$on('signout', function() {
       $scope.signedin = false
-      $rootScope.$broadcast('signout')
       $scope.playlists = []
+    })
+    $scope.signout = () => {
+      $rootScope.$broadcast('signout')
     }
     $scope.modifyingList = () => { $scope.modifying = !$scope.modifying }
     $scope.$on('signedin', function(event, next, current){
       $scope.email = next.email
+      $scope.userId = next.id
       $scope.playlists = []
       for (let i = 0; i < next.data.length; i++) {$scope.playlists.push({name: next.data[i].name, dbId: next.data[i]._id.$oid, videos: next.data[i].videos})}
       $scope.signedin = true

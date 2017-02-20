@@ -41,7 +41,7 @@ angular.module('mixtapemaker')
           $scope.$apply(function(){
             $scope.signingin = false
             $scope.upassword = ""; $scope.ipassword = "";
-            $scope.$parent.$broadcast('signedin', {email: $scope.iemail, data: result.data})
+            $scope.$parent.$broadcast('signedin', {email: $scope.iemail, data: result.data[0], id: result.data[1][0]._id.$oid})
             $scope.iemail = "";  $scope.uemail = "";
             $scope.signedin = true
             $scope.signinerror = false
@@ -59,6 +59,7 @@ angular.module('mixtapemaker')
         }
       })
     }
+    
     $scope.$on('signout', function(){
       $scope.signedin = false
       $scope.signinerror = false

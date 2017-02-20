@@ -45,7 +45,8 @@
 @media (min-width: 400px) {
   .container {
     width: 85%;
-    padding: 0; }
+    /*padding: 0;*/
+  }
 }
 
 /* For devices larger than 550px */
@@ -57,7 +58,8 @@
     margin-left: 4%; }
   .column:first-child,
   .columns:first-child {
-    margin-left: 0; }
+    /*margin-left: 0; */
+  }
 
   .one.column,
   .one.columns                    { width: 4.66666666667%; }
