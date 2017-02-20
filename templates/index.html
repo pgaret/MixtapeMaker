@@ -16,7 +16,7 @@
     <script type="text/javascript" src={{ url_for('static', filename='js/searchyt.js') }}></script>
     <script type="text/javascript" src={{ url_for('static', filename='js/searchpl.js') }}></script>
   </head>
-  <body style='text-align: center;' ng-app='mixtapemaker'>
+  <body ng-app='mixtapemaker'>
     <section id='playlists' ng-controller='Playlist'>
       <section ng-if='signedin && !searching'>
         <h1>MixtapeMaker</h1>
@@ -37,26 +37,22 @@
               <li class='plbtn' ng-click='changePlaylist($index)'>{a playlist.name a}</li>
             </span>
           </ul>
-          <section class='search eight columsn offset-by-two columns translucent'>
+          <section class='search eight columns offset-by-two columns translucent'>
             <h3>
               {a currentPlaylist.name a}
               <button ng-if='currentPlaylist' ng-click='search()'>Add Song</button>
             </h3>
-            <section ng-if='currentPlaylist.videos.length > 0'>
-              <span ng-repeat='vid in currentPlaylist.videos'>
-                <span class='four columns video'>
-                  <div ng-if='$index === currentVideo' class='video--iframe'>
-                    <youtube-video video-id='vid.ytId' player-width="'300px'" player-height="'200px'" player='video'></youtube-video>
-                  </div>
-                  <div ng-if='$index !== currentVideo' ng-attr-id="{a 'img'+($index) a}" ng-click='startVideo($index)' class='videoImg' class='video--placeholder' ng-mouseenter='imgMouseOver($index)' ng-mouseleave='imgMouseLeave($index)'>
-                    <img class='video--placeholder-main' ng-src='{a imgUrl(vid.ytId) a}'></img>
-                    <img class='video--placeholder-btn' src={{ url_for('static', filename='img/ytPlay.png') }}></img>
-                  </div>
-                  <br>{a parseName(vid.name) a}<br>
-                  <button class='btn' ng-click='removeVideo(vid.name)'><img class='play' src={{ url_for('static', filename='img/delete.png') }}></img></button>
-                </span>
-              </span>
-            </section>
+            <article ng-if='currentPlaylist.videos.length > 0' ng-repeat='vid in currentPlaylist.videos' class='four columns video'>
+              <div class='video--vidName'>{a parseName(vid.name) a}</div>
+              <div ng-if='$index === currentVideo' class='video--iframe'>
+                <youtube-video video-id='vid.ytId' player-width="'300px'" player-height="'200px'" player='video'></youtube-video>
+              </div>
+              <div ng-if='$index !== currentVideo' ng-attr-id="{a 'img'+($index) a}" ng-click='startVideo($index)' class='video--placeholder' ng-mouseenter='imgMouseOver($index)' ng-mouseleave='imgMouseLeave($index)'>
+                <img class='video--placeholder-main' ng-src='{a imgUrl(vid.ytId) a}'></img>
+                <img class='video--placeholder-btn' src={{ url_for('static', filename='img/ytPlay.png') }}></img>
+              </div>
+              <img style='width: 30px; height: 30px; text-align: center; cursor: pointer;' ng-click='removeVideo(vid.name)' src={{ url_for('static', filename='img/delete.png') }}></img>
+            </article>
           </section>
         </section>
       </section>

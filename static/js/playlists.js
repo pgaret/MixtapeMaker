@@ -47,14 +47,17 @@ angular.module('mixtapemaker')
       })
     })
     $scope.parseName = function(name){
-      if (name.length > 25){
-        return name.substring(0, 25)+"..."
+      if (name.length > 28){
+        return name.substring(0, 28)+"..."
       } else{
         return name
       }
     }
     $scope.imgUrl = (id) => {
       return 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'
+    }
+    $scope.getMargin = (index) => {
+      return (index*3) + 'vw'
     }
     $scope.getIframeSrc = function(src){
       return 'https://www.youtube.com/embed/'+src
