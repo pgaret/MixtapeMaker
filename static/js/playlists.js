@@ -86,7 +86,11 @@ angular.module('mixtapemaker')
     $scope.$on('addpl', function(event, next){
       axios({method: 'PUTS', url: '/playlists/'+next.plId+"/"+$scope.userId}).then(result=>{
         if (result.status === 200){
-          $scope.playlists.push(result.data[0])
+          $scope.$apply(function(){
+            // debugger
+            $scope.playlists.push({dbId: result.data[0]._id.$oid, name: result.data[0].name, users: result.data[0].users, videos: result.data[0].videos,})
+            $scope.currentPlaylist = $scope.playlists[$scope.playlists.length - 1]
+          })
         }
         else {
           console.log("Nope")
