@@ -86,7 +86,6 @@ angular.module('mixtapemaker')
     $scope.$on('addpl', function(event, next){
       axios({method: 'PUTS', url: '/playlists/'+next.plId+"/"+$scope.userId}).then(result=>{
         if (result.status === 200){
-          debugger
           $scope.playlists.push(result.data[0])
         }
         else {

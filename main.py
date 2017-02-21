@@ -68,6 +68,7 @@ def find_playlist(key):
 @app.route('/playlists/<pl_id>/<user_id>', methods=['PUTS'])
 def add_user_to_pl(pl_id, user_id):
     if db.playlists.find({'_id': ObjectId(pl_id)}).count() > 0:
+        # pdb.set_trace()
         email = db.users.find({'_id': ObjectId(user_id)}).next()['email']
         db.playlists.update(
             { '_id': ObjectId(pl_id)},
@@ -110,7 +111,7 @@ def add_user():
             password = jwt.encode({'password': password}, os.environ.get('SECRET', 'DEV'), algorithm='HS256')
         db.users.insert({'email': email, 'password': password})
         login_user(email)
-        return redirect(url_for('index'), 200)
+        return dumps(db.users.find({'email': email}))
     else:
         return redirect(url_for('index'), 205)
 
@@ -124,7 +125,6 @@ def create_session():
             db_pw = jwt.decode(db_pw, os.environ.get('SECRET', 'DEV'), algorithm='HS256')['password']
         if db_pw == password:
             login_user(email)
-            # pdb.set_trace()
             return dumps([db.playlists.find({'users': { '$all': [email]}}, {'name': 1, 'videos': 1, '_id': 1}), db.users.find({'email': email}, {'_id': 1})])
     return redirect(url_for('index'), 205)
 

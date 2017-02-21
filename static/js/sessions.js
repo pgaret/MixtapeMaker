@@ -20,7 +20,7 @@ angular.module('mixtapemaker')
             $scope.signedin = true
             $scope.signuperror = false
             $scope.signinerror = false
-            $scope.$parent.$broadcast('signedin', {email: $scope.uemail, data: []})
+            $scope.$parent.$broadcast('signedin', {email: $scope.uemail, data: [], id: result.data[0]._id.$oid})
           })
         } else {
           $scope.$apply(function(){
@@ -59,7 +59,7 @@ angular.module('mixtapemaker')
         }
       })
     }
-    
+
     $scope.$on('signout', function(){
       $scope.signedin = false
       $scope.signinerror = false
