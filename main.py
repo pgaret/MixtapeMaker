@@ -68,7 +68,6 @@ def find_playlist(key):
 @app.route('/playlists/<pl_id>/<user_id>', methods=['PUTS'])
 def add_user_to_pl(pl_id, user_id):
     if db.playlists.find({'_id': ObjectId(pl_id)}).count() > 0:
-        # pdb.set_trace()
         email = db.users.find({'_id': ObjectId(user_id)}).next()['email']
         db.playlists.update(
             { '_id': ObjectId(pl_id)},

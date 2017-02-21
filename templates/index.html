@@ -19,7 +19,7 @@
   <body ng-app='mixtapemaker'>
     <section id='playlists' ng-controller='Playlist'>
       <section ng-if='signedin && !searching'>
-        <h1>MixtapeMaker</h1>
+        <h1 style='text-align: center;'>MixtapeMaker</h1>
         <!-- <button ng-click='printScope()'>Scope</button><br> -->
         <section id='myPlaylists'>
           <ul class='navbar translucent'>
@@ -38,7 +38,7 @@
             </span>
           </ul>
           <section class='search eight columns offset-by-two columns translucent'>
-            <h3>
+            <h3 style='text-align: center;'>
               {a currentPlaylist.name a}
               <button ng-if='currentPlaylist' ng-click='search()'>Add Song</button>
             </h3>
