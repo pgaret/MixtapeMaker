@@ -64,7 +64,7 @@
         <section class='search eight columns offset-by-two columns translucent'>
           <h3>
             Search YouTube
-            <button ng-click="end()"><img class='btn play' src={{ url_for('static', filename='img/delete.png') }}></img></button>
+            <img class='btn add play' ng-click="end()" src={{ url_for('static', filename='img/delete.png') }}></img>
           </h3>
           <input ng-model='$parent.key' placeholder="Artist/Song/Album"></input>
           <button ng-click="searchVideos()">Go</button>
@@ -76,9 +76,7 @@
                 <br>
                 <youtube-video video-id='vid.id.videoId' player-width="'200px'" player-height="'150px'" ></youtube-video>
                 <br>
-                <button class='sidebtn' ng-click='addVideo(vid.id.videoId, vid.snippet.title, $index)'>
-                  <img class='add' src={{ url_for('static', filename='img/add.png') }}></img>
-                </button>
+                <img ng-click='addVideo(vid.id.videoId, vid.snippet.title, $index)' class='add' src={{ url_for('static', filename='img/add.png') }}></img>
                 <img ng-if='addedVideos.includes($index)' class='add' src={{ url_for('static', filename='img/check.png') }}></img>
               </span>
             </span>
@@ -92,8 +90,7 @@
         <section class='search eight columns offset-by-two columns translucent'>
           <h3>
             Search Mixtapes
-            <button ng-click='printScope()'>Print Scope</button>
-            <button ng-click="end()"><img class='btn play' src={{ url_for('static', filename='img/delete.png') }}></img></button>
+            <img class='btn add play' ng-click="end()" src={{ url_for('static', filename='img/delete.png') }}></img>
           </h3>
           <input ng-model='$parent.key' placeholder="Search for Mixtapes"></input>
           <button ng-click="searchMixtapes()">Go</button>
@@ -107,9 +104,7 @@
                 <br>
                 Songs: {a playlist.videos.length a}
                 <br>
-                <button class='sidebtn' ng-click='addPlaylist($index)'>
-                  <img class='add' src={{ url_for('static', filename='img/add.png') }}></img>
-                </button>
+                <img class='add' ng-click='addPlaylist($index)' src={{ url_for('static', filename='img/add.png') }}></img>
                 <img ng-if='addedPlaylists.includes($index)' class='add' src={{ url_for('static', filename='img/check.png') }}></img>
               </span>
             </span>

@@ -67,7 +67,6 @@ angular.module('mixtapemaker')
       return 'https://www.youtube.com/embed/'+src
     }
     $scope.$on('addVideo', function(event, next, current){
-      // debugger
       axios({method: 'POST', url: `/playlists/`+$scope.currentPlaylist.dbId,
               data: {'videoId': next.ytId, 'videoName': next.name}
     }).then(result=>{
@@ -87,7 +86,6 @@ angular.module('mixtapemaker')
       axios({method: 'PUTS', url: '/playlists/'+next.plId+"/"+$scope.userId}).then(result=>{
         if (result.status === 200){
           $scope.$apply(function(){
-            // debugger
             $scope.playlists.push({dbId: result.data[0]._id.$oid, name: result.data[0].name, users: result.data[0].users, videos: result.data[0].videos,})
             $scope.currentPlaylist = $scope.playlists[$scope.playlists.length - 1]
           })
@@ -106,11 +104,8 @@ angular.module('mixtapemaker')
               $scope.$apply(()=>{
                 if ($scope.currentVideo === i) { $scope.currentVideo = -1 }
                 $scope.currentPlaylist.videos.splice(i, 1)
-              })
-            }
-          }
-        }
-        else {
+          })}}
+        } else {
           console.log("failure to delete")
         }
       })
@@ -122,7 +117,11 @@ angular.module('mixtapemaker')
     $scope.signout = () => {
       $rootScope.$broadcast('signout')
     }
-    $scope.modifyingList = () => { $scope.modifying = !$scope.modifying }
+    $scope.modifyingList = () => {
+      $scope.modifying = !$scope.modifying
+      $scope.playlisterror = ''
+      $scope.playlistName = ''
+    }
     $scope.$on('signedin', function(event, data){
       $scope.email = data.email
       $scope.userId = data.id
