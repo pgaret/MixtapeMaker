@@ -59,10 +59,14 @@ def add_playlist():
     else:
         return redirect(url_for('index'), 205)
 
-
+@app.route('/playlists/search/')
 @app.route('/playlists/search/<key>', methods=['GET'])
-def find_playlist(key):
-    videos = db.playlists.find({'name': { '$regex': key }}, {'_id': 1, 'name': 1, 'videos': 1, 'users': 1})
+def find_playlist(key=None):
+    # pdb.set_trace()
+    if key:
+        videos = db.playlists.find({'$and': [{'name': { '$regex': key }}, {'users':{'$ne': flask_login.current_user.id}}]}, {'_id': 1, 'name': 1, 'videos': 1, 'users': 1})
+    else:
+        videos = db.playlists.find({'users':{'$ne': flask_login.current_user.id}}, {'_id': 1, 'name': 1, 'videos': 1, 'users': 1})
     return dumps(videos)
 
 @app.route('/playlists/<pl_id>/<user_id>', methods=['PUTS'])

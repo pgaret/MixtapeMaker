@@ -2,12 +2,16 @@ angular.module('mixtapemaker')
   .controller('SearchPl', ['$scope', '$rootScope', function($scope, $rootScope){
     $scope.addedPlaylists = []
     $scope.searching = false
-    $scope.$on('searchpl', function(){
+    $scope.key = ''
+    $scope.$on('searchpl', function(event, data){
       $scope.searching = true
+      $scope.email = data.email
     })
     $scope.end = () => {
       $scope.searching = false
       $scope.addedPlaylists = []
+      $scope.playlists = []
+      $scope.key = ''
       $rootScope.$broadcast('notsearching')
     }
     $scope.searchMixtapes = () => {

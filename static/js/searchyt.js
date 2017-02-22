@@ -2,6 +2,7 @@ angular.module('mixtapemaker')
   .controller('SearchYT', ['$scope', '$rootScope', function($scope, $rootScope){
     $scope.searching = false
     $scope.addedVideos = []
+    $scope.key = ''
     $scope.$on('searching', function(){
       $scope.searching = true
     })
@@ -25,6 +26,7 @@ angular.module('mixtapemaker')
       $scope.searching = false
       $scope.addedVideos = []
       $scope.result = []
+      $scope.key = ''
       $rootScope.$broadcast('notsearching')
     }
   }])

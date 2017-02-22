@@ -7,6 +7,8 @@
     <link rel="stylesheet" href={{ url_for('static', filename='css/skeleton.css') }}>
     <link rel="stylesheet" href={{ url_for('static', filename='css/index.css') }}>
     <script src="//www.youtube.com/iframe_api"></script>
+    <script src='http://chaijs.com/chai.js'></script>
+    <script src='http://sinonjs.org/releases/sinon-1.17.7.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src={{ url_for('static', filename='js/angular-youtube-embed.js') }}></script>
@@ -19,7 +21,7 @@
   <body ng-app='mixtapemaker'>
     <section id='playlists' ng-controller='Playlist'>
       <section ng-if='signedin && !searching'>
-        <h1 style='text-align: center;'>MixtapeMaker</h1>
+        <h1 class='title'>MixtapeMaker</h1>
         <!-- <button ng-click='printScope()'>Scope</button><br> -->
         <section id='myPlaylists'>
           <ul class='navbar translucent'>
@@ -118,7 +120,7 @@
     <nav class='translucent' id='accounting' ng-controller='Account'>
       <!-- <button ng-click='printScope()'>Scope</button><br> -->
       <section style='text-align: center;' ng-if='!signedin'>
-        <h1 class='login'>MixtapeMaker</h1>
+        <h1 class='title login'>MixtapeMaker</h1>
         <button class='logbtn' ng-click="switchState('signin')">Sign In</button>
         <button class='logbtn' ng-click="switchState('signup')">Sign Up</button>
         <form ng-if="currentState === 'signup'" ng-submit='signup()'>

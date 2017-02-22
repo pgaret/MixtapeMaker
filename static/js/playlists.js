@@ -21,7 +21,7 @@ angular.module('mixtapemaker')
     }
     $scope.searchPlaylists = () => {
         $scope.searching = true
-        $rootScope.$broadcast('searchpl')
+        $rootScope.$broadcast('searchpl', {email: $scope.email})
     }
     $scope.changePlaylist = (index) => {
       $scope.currentVideo = -1
@@ -123,11 +123,11 @@ angular.module('mixtapemaker')
       $rootScope.$broadcast('signout')
     }
     $scope.modifyingList = () => { $scope.modifying = !$scope.modifying }
-    $scope.$on('signedin', function(event, next, current){
-      $scope.email = next.email
-      $scope.userId = next.id
+    $scope.$on('signedin', function(event, data){
+      $scope.email = data.email
+      $scope.userId = data.id
       $scope.playlists = []
-      for (let i = 0; i < next.data.length; i++) {$scope.playlists.push({name: next.data[i].name, dbId: next.data[i]._id.$oid, videos: next.data[i].videos})}
+      for (let i = 0; i < data.data.length; i++) {$scope.playlists.push({name: data.data[i].name, dbId: data.data[i]._id.$oid, videos: data.data[i].videos})}
       $scope.signedin = true
       $scope.currentPlaylist = $scope.playlists[0]
     })
