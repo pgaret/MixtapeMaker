@@ -31,6 +31,16 @@ angular.module('mixtapemaker')
       $scope.searching = true
       $rootScope.$broadcast('searching')
     }
+    $scope.searchMuse = () => {
+      axios({method: 'GET', url: `/setlistfm/muse`}).then(result=>{
+        if (result.status === 200) {
+          console.log(result);
+        }
+        else { 
+          console.log(result);
+        }
+      })
+    }
     $scope.imgMouseOver = (index) => {
       document.getElementById('img'+index).children[1].src = document.location.href+"static/img/ytHover.png"
     }

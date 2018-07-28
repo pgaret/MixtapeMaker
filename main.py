@@ -106,6 +106,12 @@ def remove_video(playlist_id, video_name):
     else:
         return redirect(url_for('index'), 205)
 
+@app.route("/setlistfm/<artistName>", methods=['GET'])
+def get_artist(name):
+    headers = {"x-api-key": "cebc3a4b-f2ba-495c-ad3f-0d503f88a747", "Accept": "application/json"}
+    r = requests.get("https://api.setlist.fm/rest/1.0/search/artists?artistName="+artistName+"&p=1&sort=sortName", headers=headers)
+    return r
+
 @app.route("/users", methods=['POST'])
 def add_user():
     email = json.loads(request.data.decode(encoding='UTF-8'))['email']
