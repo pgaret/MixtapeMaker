@@ -32,11 +32,12 @@ angular.module('mixtapemaker')
       $rootScope.$broadcast('searching')
     }
     $scope.searchMuse = () => {
+      console.log("Searching Muse!");
       axios({method: 'GET', url: `/setlistfm/muse`}).then(result=>{
         if (result.status === 200) {
           console.log(result);
         }
-        else { 
+        else {
           console.log(result);
         }
       })
